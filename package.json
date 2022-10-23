@@ -1,0 +1,32 @@
+{
+  "name": "nodeprojects",
+  "version": "1.0.0",
+  "description": "node.js project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://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@github.com/chaeyun-sim/nodeprojects.git"
+  },
+  "keywords": [
+    "node.js"
+  ],
+  "author": "chaeyunsim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chaeyun-sim/nodeprojects/issues"
+  },
+  "homepage": "https://github.com/chaeyun-sim/nodeprojects#readme",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "express": "^4.18.2",
+    "jade": "^1.11.0",
+    "node-mysql": "^0.4.2",
+    "orientjs": "^3.0.11",
+    "pug": "^3.0.2",
+    "uglify-js": "^3.17.3",
+    "underscore": "^1.13.6"
+  }
+}

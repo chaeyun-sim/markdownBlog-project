@@ -1,0 +1,18 @@
+doctype html
+html
+head
+    meta(charset="UTF-8")
+    body
+        h1 
+            a(href='/topic') Server Side Javascript 
+        ul
+            each topic in topics
+                li
+                    a(href='/topic/'+topic.id)= topic.title
+        article
+            h2= "Are you sure to delete '" + topic.title + "'?"
+            form(action='/topic/'+topic.id+'/delete' method='post')
+                p
+                    input(type='submit' value='YES')
+            a(href='/topic/'+topic.id) 
+                button NO
