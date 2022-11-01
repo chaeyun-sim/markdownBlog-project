@@ -36,11 +36,11 @@
                 </div>
             </div>
         <% }) %> 
+        <a href="/articles/<%= article.slug %>/comments" class="btn btn-info">New</a>
         <div class="form-group">
-            <label for="author">작성자 : <%= article.author %></label>
-            <textarea required name="text" id="text" class="form-control" placeholder="댓글을 입력해주세요."><%= comments.text %></textarea>
+            <label for="author">Author : <%= article.author %></label>
+            <textarea required name="text" id="text" class="form-control" placeholder="댓글을 입력해주세요."><%= comment.text %></textarea>
         </div>
-        <a href="/articles/<%= article.slug %>" class="btn btn-info">Save</a>
     </div>
 </body>
 </html>

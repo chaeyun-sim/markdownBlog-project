@@ -1,5 +1,6 @@
 const express = require('express');
 const Article = require('./../models/article');
+const Comment = require('./../models/comment');
 const router = express.Router();
 
 router.get('/new', (req, res) => {
@@ -13,9 +14,17 @@ router.get('/edit/:id', async (req, res) => {
 
 router.get('/:slug', async (req, res) => {
     const article = await Article.findOne({ slug: req.params.slug });
+    const comments = await Comment.find().sort({ createdAt: 'desc' });
     if (article == null) res.redirect('/');
-    res.render('articles/show', { article: article });
-})
+    res.render('articles/show', { article: article, comments: comments });
+});
+
+// router.get('/:id/comments', async (req, res) => {
+//     const article = await Article.findOne({ slug: req.params.slug });
+//     const comments = await Comment.find().sort({ createdAt: 'desc' });
+//     console.log(article);
+//     res.render('articles/new_comments', { article: article, comments: comments });
+// })
 
 router.post('/', async (req, res, next) => {
     req.article = new Article();
