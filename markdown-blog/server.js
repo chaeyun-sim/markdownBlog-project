@@ -1,12 +1,19 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Article = require('./models/article');
+const Comments = require('./models/comment');
 const articleRouter = require('./routes/articles');
+const rootRouter = require('./routes/root')
 const methodOverride = require('method-override');
+// const passport = require('passport');
+// const LocalStrategy = require('passport-local').Strategy;
+// const flash = require('connect-flash');
+// const session = require('express-session');
+
 const app = express();
 const databaseName = 'cluster0'
-const url = `mongodb+srv://chaeyun:zKNNyM0JBBVrMWjy@${databaseName}.hybtrew.mongodb.net/${databaseName}?retryWrites=true&w=majority`
-const port = 3000;
+const url = 'mongodb+srv://chaeyun:zKNNyM0JBBVrMWjy@cluster0.hybtrew.mongodb.net/?retryWrites=true&w=majority'
+const port = 5050;
 
 const db = mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }).then( () => {
     console.log(`Connected to database : ${databaseName}`)
@@ -22,6 +29,8 @@ app.get('/', async (req, res) => {
 });
 
 app.use('/articles', articleRouter);
+app.use('/', rootRouter);
+
 
 app.listen(port, () => {
     console.log(`Connected to port : ${port}`)

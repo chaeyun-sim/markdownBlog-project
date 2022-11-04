@@ -1,6 +1,7 @@
 const express = require('express');
+const article = require('./../models/article');
 const Article = require('./../models/article');
-const Comment = require('./../models/comment');
+const Comments = require('./../models/comment');
 const router = express.Router();
 
 router.get('/new', (req, res) => {
@@ -14,17 +15,17 @@ router.get('/edit/:id', async (req, res) => {
 
 router.get('/:slug', async (req, res) => {
     const article = await Article.findOne({ slug: req.params.slug });
-    const comments = await Comment.find().sort({ createdAt: 'desc' });
+    // const comments = await Comments.findOne({ post: req.params.post });
+    const comment = await Comments.find().sort({ createdAt: 'desc' });
     if (article == null) res.redirect('/');
-    res.render('articles/show', { article: article, comments: comments });
+    res.render('articles/show', { article: article, comments: comment });
 });
 
-// router.get('/:id/comments', async (req, res) => {
-//     const article = await Article.findOne({ slug: req.params.slug });
-//     const comments = await Comment.find().sort({ createdAt: 'desc' });
-//     console.log(article);
-//     res.render('articles/new_comments', { article: article, comments: comments });
-// })
+router.get('/:slug/new/comment', async (req, res) => {
+    const article = await Article.findOne({ slug: req.params.slug });
+    const comment = await Comments.find().sort({ createdAt: 'desc' });
+    res.render('articles/edit_comment', { article: article, comments: comment, comment: new Comments() })
+});
 
 router.post('/', async (req, res, next) => {
     req.article = new Article();
@@ -41,6 +42,16 @@ router.delete('/:id', async (req, res) => {
     res.redirect('/');
 });
 
+// router.post('/comment/save', async (req, res, next) => {
+//     req.article = new Article();
+//     next();
+// }, saveCommentAndRedirect());
+
+router.post('/comment/save', (req, res) => {
+    res.send(req.author)
+})
+
+
 function saveArticleAndRedirect(path) {
     return async (req, res) => {
         let article = req.article;
@@ -50,11 +61,25 @@ function saveArticleAndRedirect(path) {
         try {
             await article.save();
             res.redirect('/articles/'+ article.slug);
-        } catch (e) {
-            console.log(e);
+        } catch (err) {
+            console.log(err);
             res.render(`articles/${path}`, { article: article });
         };
     };
 };
+
+// function saveCommentAndRedirect(path){
+//     return async (req, res) => {
+//         let article = req.article;
+//         let comment = req.comment;
+//         try {
+//             await comment.save();
+//             res.redirect('/articles/' + article.slug);
+//         } catch (e) {
+//             console.log(e);
+//             res.render('/', { article: article, comment: comment });
+//         }
+//     }
+// }
 
 module.exports = router;

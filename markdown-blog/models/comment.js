@@ -1,20 +1,31 @@
 const mongoose = require('mongoose');
-const { marked } = require('marked');
-const slugify = require('slugify');
 
-const commentSchema = new mongoose.Schema({
-    text: {
+// schema
+var commentSchema = mongoose.Schema({
+    title: {
+        type: String,
+        required: true,
+    },
+    post: {
+        type: String,
+        required: true,
+        // isDeleted:{type:Boolean},
+    },
+    author: {
+        type: String,
+        required: true
+    },
+    parentComment: {
         type: String,
     },
     createdAt: {
-        type: Date,
-        default: Date.now,
+        type:Date,
+        default:Date.now
     },
-    slug: {
-        type: String,
-        required: true,
-        unique: true,
-    }
+    // updatedAt:{
+    //     type:Date},
+    },{
+    toObject:{virtuals:true}
 });
 
-module.exports = mongoose.model('Comments', commentSchema);
+module.exports = mongoose.model('comment',commentSchema);
