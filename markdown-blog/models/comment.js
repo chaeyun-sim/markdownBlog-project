@@ -2,21 +2,14 @@ const mongoose = require('mongoose');
 
 // schema
 var commentSchema = mongoose.Schema({
-    title: {
-        type: String,
-        required: true,
-    },
     post: {
         type: String,
         required: true,
         // isDeleted:{type:Boolean},
     },
-    author: {
+    writer: {
         type: String,
         required: true
-    },
-    parentComment: {
-        type: String,
     },
     createdAt: {
         type:Date,
@@ -25,7 +18,8 @@ var commentSchema = mongoose.Schema({
     // updatedAt:{
     //     type:Date},
     },{
-    toObject:{virtuals:true}
+    // toObject:{virtuals:true},
+    versionKey: false,
 });
 
 module.exports = mongoose.model('comment',commentSchema);

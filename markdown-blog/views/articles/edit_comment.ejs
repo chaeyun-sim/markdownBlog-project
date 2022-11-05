@@ -25,24 +25,21 @@
         <h4 class="mt-4">Comments</h4>
         <% comments.forEach(comment => { %>
             <div class="card mt-4">
-                <div class="car-body ml-3 mb-2 mt-2">             
-                    <div class="card-text ml-2 mt-2 mb-2">
-                        작성자: <strong><%= comment.author %></strong>
-                    </div>
-                    <div class="card-text ml-2 mr-2 mb-2">
-                        <%= comment.title %> 
+                <div class="car-body ml-3 mb-2 mt-2">    
+                    <div class="card-text mb-2 mt-2">
+                        <h4>RE: <%= article.title %></h4>
                     </div>
                     <div class="card-text mb-2">
                         <%= comment.post %> 
                     </div>
                     <div class="card-subtitle text-muted mb-2">
-                        <%= comment.createdAt.toLocaleDateString() %> 
+                        <%= comment.createdAt.toLocaleDateString() %> by <strong><%= comment.writer %></strong>
                     </div>
                 </div>
             </div>
         <% }) %> 
         <div class="card-text border mt-4" style="height:0%">
-            <form action="/articles/<%= article.slug %>" method="GET">
+            <form action="/articles/<%= article.slug %>" method="POST">
                 <%- include("_comments_fields") %> 
             </form>
         </div>

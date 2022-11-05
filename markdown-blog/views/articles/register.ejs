@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <title>Blog</title>
+</head>
+<body>
+    <div class="pt-5">  
+        <h1 class="text-center mb-4"> SIGN UP </h1>  
+        <div class="container mt-4">
+            <div class="card card-body mx-auto"  style="width: 350px">
+                <form id="submitForm" action="/register" method="post" _lpchecked="1">  
+                    <input type="hidden" name="_csrf">  
+                    <div class="form-group required">  
+                        <label for="username" class="mt-2 align-items-center"> Enter your Username </label>  
+                        <input type="text" class="form-control text-lowercase mt-2" id="username" required="" name="username" value="<%= user.username %>">  
+                    </div>    
+
+                    <div class="form-group required">  
+                        <label for="password" class="mt-2 align-items-center"> Enter your Password </label>  
+                        <input type="password" class="mt-2 form-control" required="" id="password" name="password" value="<%= user.password %>">  
+                    </div>
+                    
+                    <div class="form-group required">  
+                        <label for="password" class="mt-2 align-items-center"> Enter your password again to confirm. </label>  
+                        <input type="password" class="mt-2 form-control" required="" id="password_cnf" name="password_cnf" value="">  
+                    </div>
+
+                    <div class="form-group required">  
+                        <label for="email" class="mt-2 align-items-center"> Enter your Email </label>  
+                        <input type="email" class="mt-2 form-control" required="" id="email" name="email" value="<%= user.email %>">  
+                    </div> 
+
+                    <div class="form-group mt-4">  
+                        <input type="radio" id="male" name="gender" value="<%= user.gender %>" checked>
+                        <label for="gender_m" class="mr-2">Male</label>
+                        <input type="radio" id="female" name="gender" value="<%= user.gender %>">
+                        <label for="gender_f">Female</label>
+                    </div>
+
+                    <div class="form-group pt-1">
+                        <a href="/login" class="btn btn-secondary" style="width: 45%">Back</a>
+                        <button class="btn btn-primary ml-4" style="width: 45%" type="submit" onclick="inputCheck()"> Sign UP ! </button>
+                    </div>  
+                </form>  
+            </div>  
+        </div>  
+    </div>
+    <script>
+        function inputCheck() {
+            // if ($("input:password[name='password_cnf']").val == "") {
+            //     alert("비밀번호 확인을 위해 다시 한번 입력해주세요");
+            //     document.getElementById("password_cnf").focus();
+            //     return;
+            // };
+            // const password = document.getElementById("password")
+            // const confirm_password = document.getElementById("password_cnf");
+            
+            // function validatePassword(){
+            //     if(password.value != password_cnf.value) {
+            //         confirm_password.setCustomValidity("Passwords Don't Match"); 
+            //     } 
+            //     else {
+            //         confirm_password.setCustomValidity(''); 
+            //     }
+            // }
+            
+            // password.onchange = validatePassword;
+            // confirm_password.onkeyup = validatePassword;
+        }
+    </script>        
+</body>
+</html>

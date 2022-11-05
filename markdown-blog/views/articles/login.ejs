@@ -16,12 +16,12 @@
                     <input type="hidden" name="_csrf">  
                     <div class="form-group required">  
                         <label for="username" class="mt-2 align-items-center"> Enter your Name </label>  
-                        <input type="text" class="form-control text-lowercase mt-2" id="username" required="" name="username" value="">  
+                        <input type="text" class="form-control text-lowercase mt-2" id="username" required="" name="username" value="<%= user.username %>">  
                     </div>    
 
                     <div class="form-group required">  
                         <label for="password" class="mt-2 align-items-center"> Enter your Password </label>  
-                        <input type="password" class="mt-2 form-control" required="" id="password" name="password" value="">  
+                        <input type="password" class="mt-2 form-control" required="" id="password" name="password" value="<%= user.password %>">  
                     </div>  
 
                     <div class="form-group pt-1">  

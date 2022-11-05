@@ -1,10 +1,12 @@
 const express = require('express');
+// import express from express;
 const mongoose = require('mongoose');
 const Article = require('./models/article');
 const Comments = require('./models/comment');
 const articleRouter = require('./routes/articles');
 const rootRouter = require('./routes/root')
 const methodOverride = require('method-override');
+const bodyParser = require('body-parser');
 // const passport = require('passport');
 // const LocalStrategy = require('passport-local').Strategy;
 // const flash = require('connect-flash');
@@ -20,6 +22,7 @@ const db = mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: tr
 });
 
 app.set('view engine', 'ejs');
+app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
 
