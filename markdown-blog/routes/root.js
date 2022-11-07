@@ -43,7 +43,7 @@ router.post('/login', async (req, res) => {
         if(userInfo.password == req.body.password){
             res.redirect('/profile/'+userInfo.id)
         } else{
-            res.write("<script>alert('아이디 혹은 비밀번호를 다시 확인해주세요.)'</script>");
+            res.write("<script>alert('아이디 혹은 비밀번호를 다시 확인하세요.)'</script>");
             res.redirect('/login')
         }
     } else {

@@ -23,7 +23,7 @@ const db = mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: tr
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
 app.get('/', async (req, res) => {

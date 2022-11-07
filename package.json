@@ -50,7 +50,8 @@
     "sha256": "^0.2.0",
     "slugify": "^1.6.5",
     "uglify-js": "^3.17.3",
-    "underscore": "^1.13.6"
+    "underscore": "^1.13.6",
+    "uniqid": "^5.4.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

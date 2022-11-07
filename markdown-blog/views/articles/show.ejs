@@ -23,26 +23,45 @@
     <div class="container">
         <hr>
         <h4 class="mt-4">Comments</h4>
+        <div id="comments">
             <% comments.forEach(comment => { %>
                 <div class="card mt-4">
                     <div class="car-body ml-3 mb-2 mt-2">    
                         <div class="card-text mb-2 mt-2">
-                            <h4>RE: <%= article.title %></h4>
+                            <h4>RE: <%= comment.parentTitle %></h4>
                         </div>
                         <div class="card-text mb-2">
                             <%= comment.post %> 
                         </div>
-                        <div class="card-subtitle text-muted mb-2">
+                        <div class="card-subtitle text-muted mt-2 mb-2">
                             <%= comment.createdAt.toLocaleDateString() %> by <strong><%= comment.writer %></strong>
+                            <a href="/" class="btn btn-danger mr-3" style="float:right; height:35px">D</a>
+                            <a href="/articles/<%= article.slug%>/<%= comment.id %>" class="btn btn-info mr-2 mb-2" style="float:right; height:35px", onclick="editComment()">E</a>
                         </div>
                     </div>
                 </div>
             <% }) %> 
+        </div>
     </div>
-    <div class="container border-0 ml-6 mb-4">
-        <form action="/articles/<%= article.slug %>/new/comment">
-            <button type="submit" class="btn btn-primary mt-4 mb-4">Write</button>
-        </form>
+    <div class="container border-0 ml-6 mb-4" id="writeButton">
+            <button type="submit" class="btn btn-primary mt-4 mb-4" onclick="hideButton()">Write</button>
     </div>
+    <div class="container">
+        <div class="card-text border mt-4" style="height:0%" id="newComment">
+            <form action="/articles/<%= article.slug %>/comment" method="POST">
+                <%- include("_comments_fields") %> 
+            </form>
+        </div>
+    </div>
+    <script>
+        const writeButton = document.getElementById("writeButton");
+        const newComment = document.getElementById("newComment");
+        newComment.hidden = true;
+        
+        function hideButton(){
+            writeButton.hidden = true;
+            newComment.hidden = false;
+        };
+    </script>
 </body>
 </html>

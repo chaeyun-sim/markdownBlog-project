@@ -21,10 +21,14 @@ const articleSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    isDeleted: {
+        type: Boolean,
+        required: true,
+    },
     slug: {
         type: String,
         required: true,
-        unique: true,
+        unique: false,
     },
     sanitizedHtml: {
         type: String,
