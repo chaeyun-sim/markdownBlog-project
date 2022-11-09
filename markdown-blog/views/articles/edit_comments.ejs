@@ -10,55 +10,49 @@
 <body>
     <div class="container">
         <h1 class="mb-4 mt-4 display-4"><%= article.title %></h1>
-        <div class="text-muted mb-2">
-            <%= article.createdAt.toLocaleDateString() %>
-        </div>
-
         <a href="/" class="btn btn-secondary">All Articles</a>
         <a href="/articles/edit/<%= article.id %>" class="btn btn-info">Edit</a>
         <div class="mt-4 mb-4">
             <%- article.sanitizedHtml %> 
         </div>
+        <div class="text-muted mb-3">
+            <%= article.createdAt.toLocaleDateString() %>
+        </div>
     </div>
     <div class="container">
-        <hr>
-        <h4 class="mt-4">Comments</h4>
+        <h3 class="mt-4"><%= length %> Comments</h3>
+        <hr style='border-style: dashed'>
         <div id="comments">
             <form action="/<%= article.slug %>/edit/comment">
                 <% comments.forEach(comment => { %>
-                    <div class="card mt-4">
-                        <div class="car-body ml-3 mb-2 mt-2">    
-                            <div class="card-text mb-2 mt-2">
-                                <h4>RE: <%= comment.parentTitle %></h4>
+                    <div class="mt-4 mb-4" >
+                        <div class="mb-4 mt-4 border-bottom">    
+                            <div class="mb-2 mt-2">
+                                <h4 style="float: left">RE: <%= comment.parentTitle %></h4>
+                                <div class="card-subtitle text-muted mr-3 mt-1" style="float: right">
+                                    <%= comment.createdAt.toLocaleDateString() %> by <strong><%= comment.writer %></strong>
+                                </div>
                             </div>
-                            <div class="card-text mb-2">
+                            <br><br>
+                            <div class="card-text mb-4" style="float: left">
                                 <%= comment.post %> 
                             </div>
-                            <div class="card-subtitletext-muted mb-2">
-                                <%= comment.createdAt.toLocaleDateString() %> by <strong><%= comment.writer %></strong>
-                                <a href="/" class="btn btn-danger mr-3 mb-2" style="float:right; height:35px">D</a>
+                            <div class="mb-4">
+                                <a href="/articles/<%= article.slug%>/del/<%= comment._id %>" class="btn btn-danger mr-3 mb-4" style="float:right; height:35px">D</a>
                             </div>
+                            <br>
                         </div>
                     </div>
                 <% }) %> 
             </form>
         </div>
     </div>
-    <div class="container border-0 ml-6 mb-4" id="writeButton">
-            <button type="submit" class="btn btn-primary mt-4 mb-4">Write</button>
-    </div>
     <div class="container">
         <div class="card-text border mt-4" style="height:0%" id="editComment">
-            <form action="/articles/<%= article.slug %>?_method=PUT" method="POST">
+            <form action="/articles/<%= article.slug %>/<%= this_comment.id %>?_method=PUT" method="POST">
                 <%- include("_edit_comment_fields") %> 
             </form>
         </div>
     </div>
-    <script>
-        const writeButton = document.getElementById("writeButton");
-        const editComment = document.getElementById("editComment");
-        writeButton.hidden = true;
-        editComment.hidden = false;
-    </script>
 </body>
 </html>

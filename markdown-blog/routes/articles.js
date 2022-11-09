@@ -3,42 +3,29 @@ const Article = require('./../models/article');
 const Comments = require('./../models/comment');
 const bodyParser = require('body-parser');
 const router = express.Router();
-const uniqid = require('uniqid');
+const randomid = require('randomid');
+const { updateOne } = require('./../models/article');
 
+// 새 아티클 저장 페이지
 router.get('/new', (req, res) => {
     res.render('articles/new', { article: new Article() })
 });
 
+// 아티클의 수정페이지
 router.get('/edit/:id', async (req, res) => {
     const article = await Article.findById(req.params.id);
     res.render('articles/edit', { article: article })
 });
 
+// 아티클 페이지
 router.get('/:slug', async (req, res) => {
     const article = await Article.findOne({ slug: req.params.slug });
-    const comment = await Comments.find({parentTitle: article.title }).sort({ createdAt: 'desc' });
+    const comments = await Comments.find({parentTitle: article.title }).sort({ createdAt: 'desc' });
     if (article == null) res.redirect('/');
-    res.render('articles/show', { article: article, comments: comment, comment: new Comments() });
+    res.render('articles/show', { article: article, comments: comments, length: Object.keys(comments).length, comment: new Comments() });
 });
 
-router.post('/:slug/comment', async (req, res) => {
-    const article = await Article.findOne({ slug: req.params.slug });
-    const comment = new Comments({
-        parentTitle: article.title,
-        writer: req.body.writer,
-        post: req.body.post,
-        slug: uniqid(),
-    });
-    try {
-        await comment.save();
-        console.log("saved!")
-        res.status(301).redirect(`/articles/${article.slug}`);
-    } catch (e) {
-        console.log(`catch error when saving comments: ${e}`);
-        res.redirect('/');
-    };
-});
-
+// 메인 페이지
 router.post('/', async (req, res, next) => {
     req.article = new Article();
     next();
@@ -54,21 +41,61 @@ router.delete('/:id', async (req, res) => {
     res.redirect('/');
 });
 
-router.post('/comment/save', (req, res) => {
-    res.send(req.body.author)
+// 댓글 추가
+router.post('/:slug/comment', async (req, res) => {
+    const article = await Article.findOne({ slug: req.params.slug });
+    const comment = new Comments({
+        parentTitle: article.title,
+        writer: req.body.writer,
+        post: req.body.post,
+        isDeleted: false,
+        slug: randomid(17),
+    });
+    try {
+        await comment.save();
+        console.log("saved!")
+        res.status(301).redirect(`/articles/${article.slug}`);
+    } catch (e) {
+        console.log(`catch error when saving comments: ${e}`);
+        res.redirect('/');
+    };
 });
 
+// 댓글 수정
+router.put('/:slug/:id', async (req, res) => {
+    const article = await Article.findOne({ slug: req.params.slug });
+    await Comments.findByIdAndUpdate(
+        req.params.id,
+        {
+            writer: req.body.writer,
+            post: req.body.post,
+        },
+    )
+    res.status(301).redirect(`/articles/${article.slug}`);
+})
+
+// 댓글 추가 페이지
 router.get('/:slug/:id', async (req, res) => {
     const article = await Article.findOne({ slug: req.params.slug });
-    const comments = await Comments.find({parentTitle: article.title }).sort({ createdAt: 'desc' });
-    const comment = await Comments.findOne({ id: req.params.id });
-    res.render('articles/edit_comments', { article: article, comments: comments, comment: comment})
+    const comments = await Comments.find({ parentTitle: article.title }).sort({ createdAt: 'desc' });
+    const comment = await Comments.findOne({ _id: req.params.id });
+    res.render('articles/edit_comments', { article: article, comments: comments, this_comment: comment, length: Object.keys(comments).length })
 });
 
-router.put('/:slug', async (req, res) => {
-    // 수정파트
-    // "/articles/<%= article.slug %>?_method=PUT"
-});
+// 댓글 삭제 수정 필요 ❗️❗️❗️
+// router.get('/:slug/del/:id', async (req, res) => {
+//     const article = await Article.findOne({ slug: req.params.slug });
+//     const comments = await Comments.findOne({ _id: req.params.id });
+//     comments.isDeleted = true;
+//     try{
+//         comments.save()
+//         hideComment.style.hidden = true;   // 불가능
+//         res.redirect('/articles/'+ article.slug);
+//     } catch (err) {
+//         console.log(`catched error when deleting comments : ${err}`)
+//         res.status(301).redirect(`/articles/${article.slug}`);
+// }});
+
 
 function saveArticleAndRedirect(path) {
     return async (req, res) => {
@@ -76,6 +103,7 @@ function saveArticleAndRedirect(path) {
         article.title = req.body.title;
         article.description = req.body.description;
         article.markdown = req.body.markdown;
+        article.isDeleted = false;
         try {
             await article.save();
             res.redirect('/articles/'+ article.slug);

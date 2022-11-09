@@ -1,11 +1,11 @@
 <div class="form-group ml-4">
     <p>
         <label for="writer">작성자: </label>
-        <input required value="<%= comment.writer %>" type="text" name="writer" id="writer" class="mb-2 mt-4" placeholder="<%= comment.writer %>">
+        <input required value="<%= this_comment.writer %>" type="text" name="writer" id="writer" class="mb-2 mt-4" placeholder="<%= this_comment.writer %>">
     </p>
-    <h4 class="">RE: <%= comment.parentTitle %></h4>
+    <h4 class="">RE: <%= this_comment.parentTitle %></h4>
     <div>
-        <textarea required name="post" id="post" class="w-75 mt-2 border" placeholder=""><%= comment.post %></textarea>
+        <textarea required name="post" id="post" class="w-75 mt-2 border" placeholder=""><%= this_comment.post %></textarea>
         <button type="submit" class="btn btn-primary ml-2 mb-4">Update</button>
         <a href="/articles/<%= article.slug %>" class="btn btn-secondary mb-4">Cancel</a>
     </div>

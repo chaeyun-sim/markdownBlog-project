@@ -10,34 +10,37 @@
 <body>
     <div class="container">
         <h1 class="mb-4 mt-4 display-4"><%= article.title %></h1>
-        <div class="text-muted mb-2">
-            <%= article.createdAt.toLocaleDateString() %>
-        </div>
-
         <a href="/" class="btn btn-secondary">All Articles</a>
         <a href="/articles/edit/<%= article.id %>" class="btn btn-info">Edit</a>
         <div class="mt-4 mb-4">
             <%- article.sanitizedHtml %> 
         </div>
+        <div class="text-muted mb-3">
+            <%= article.createdAt.toLocaleDateString() %>
+        </div>
     </div>
     <div class="container">
-        <hr>
-        <h4 class="mt-4">Comments</h4>
+        <h3 class="mt-4"><%= length %> Comments</h3>
+        <hr style='border-style: dashed'>
         <div id="comments">
             <% comments.forEach(comment => { %>
-                <div class="card mt-4">
-                    <div class="car-body ml-3 mb-2 mt-2">    
-                        <div class="card-text mb-2 mt-2">
-                            <h4>RE: <%= comment.parentTitle %></h4>
+                <div class="mt-4 mb-4">
+                    <div class="mb-4 mt-4 border-bottom"  id="post">    
+                        <div class="mb-2 mt-2">
+                            <h4 style="float: left">RE: <%= comment.parentTitle %></h4>
+                            <div class="card-subtitle text-muted mr-3 mt-1" style="float: right">
+                                <%= comment.createdAt.toLocaleDateString() %> by <strong><%= comment.writer %></strong>
+                            </div>
                         </div>
-                        <div class="card-text mb-2">
+                        <br><br>
+                        <div class="card-text mb-4" style="float: left">
                             <%= comment.post %> 
                         </div>
-                        <div class="card-subtitle text-muted mt-2 mb-2">
-                            <%= comment.createdAt.toLocaleDateString() %> by <strong><%= comment.writer %></strong>
-                            <a href="/" class="btn btn-danger mr-3" style="float:right; height:35px">D</a>
-                            <a href="/articles/<%= article.slug%>/<%= comment.id %>" class="btn btn-info mr-2 mb-2" style="float:right; height:35px", onclick="editComment()">E</a>
+                        <div class="mb-4">
+                            <a href="/articles/<%= article.slug%>/del/<%= comment._id %>" id="del" class="btn btn-danger mr-3 mb-4" style="float:right; height:35px" onclick="delComment()">D</a>
+                            <a href="/articles/<%= article.slug%>/<%= comment._id %>" class="btn btn-info mr-2" style="float:right; height:35px" id='editButton'>E</a>
                         </div>
+                        <br>
                     </div>
                 </div>
             <% }) %> 
@@ -56,12 +59,19 @@
     <script>
         const writeButton = document.getElementById("writeButton");
         const newComment = document.getElementById("newComment");
+        const del = document.getElementById("delete");
+        const post = document.getElementById("post")
         newComment.hidden = true;
         
         function hideButton(){
             writeButton.hidden = true;
             newComment.hidden = false;
         };
+        
+        // 삭제 시 숨김처리 (잘 돌아가지만 새로고침을 누르면 다시 나타남)
+        // function delComment(){
+        //     post.hidden = true;
+        // };
     </script>
 </body>
 </html>
