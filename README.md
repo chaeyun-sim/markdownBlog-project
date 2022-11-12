@@ -1,6 +1,6 @@
 # Markdown Blog Project
 
-starting from October 23, 2022\
+starting from October 23, 2022
 
 ## Week 1
 11/04 - Updated comment part (Read)
