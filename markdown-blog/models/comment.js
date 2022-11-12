@@ -26,6 +26,7 @@ const commentSchema = mongoose.Schema({
     isDeleted: {
         type: Boolean,
         required: true,
+        default: false,
     },
     slug: {
         type: String,

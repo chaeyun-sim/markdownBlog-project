@@ -37,7 +37,7 @@
                             <%= comment.post %> 
                         </div>
                         <div class="mb-4">
-                            <a href="/articles/<%= article.slug%>/del/<%= comment._id %>" id="del" class="btn btn-danger mr-3 mb-4" style="float:right; height:35px" onclick="delComment()">D</a>
+                            <a href="/articles/<%= article.slug%>/del/<%= comment._id %>" class="btn btn-danger mr-3 mb-4" style="float:right; height:35px">D</a>
                             <a href="/articles/<%= article.slug%>/<%= comment._id %>" class="btn btn-info mr-2" style="float:right; height:35px" id='editButton'>E</a>
                         </div>
                         <br>
@@ -59,19 +59,13 @@
     <script>
         const writeButton = document.getElementById("writeButton");
         const newComment = document.getElementById("newComment");
-        const del = document.getElementById("delete");
-        const post = document.getElementById("post")
         newComment.hidden = true;
         
         function hideButton(){
             writeButton.hidden = true;
             newComment.hidden = false;
         };
-        
-        // 삭제 시 숨김처리 (잘 돌아가지만 새로고침을 누르면 다시 나타남)
-        // function delComment(){
-        //     post.hidden = true;
-        // };
     </script>
+
 </body>
 </html>

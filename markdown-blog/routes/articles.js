@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 const randomid = require('randomid');
 const { updateOne } = require('./../models/article');
+const comment = require('./../models/comment');
 
 // 새 아티클 저장 페이지
 router.get('/new', (req, res) => {
@@ -20,7 +21,8 @@ router.get('/edit/:id', async (req, res) => {
 // 아티클 페이지
 router.get('/:slug', async (req, res) => {
     const article = await Article.findOne({ slug: req.params.slug });
-    const comments = await Comments.find({parentTitle: article.title }).sort({ createdAt: 'desc' });
+    const comments = await Comments.find({ parentTitle: article.title, isDeleted : false }).sort({ createdAt: 'asc' });
+    console.log(comments)
     if (article == null) res.redirect('/');
     res.render('articles/show', { article: article, comments: comments, length: Object.keys(comments).length, comment: new Comments() });
 });
@@ -61,6 +63,14 @@ router.post('/:slug/comment', async (req, res) => {
     };
 });
 
+// 댓글 수정 페이지
+router.get('/:slug/:id', async (req, res) => {
+    const article = await Article.findOne({ slug: req.params.slug });
+    const comments = await Comments.find({ parentTitle: article.title, isDeleted : false }).sort({ createdAt: 'asc' });
+    const comment = await Comments.findOne({ _id: req.params.id });
+    res.render('articles/edit_comments', { article: article, comments: comments, this_comment: comment, length: Object.keys(comments).length })
+});
+
 // 댓글 수정
 router.put('/:slug/:id', async (req, res) => {
     const article = await Article.findOne({ slug: req.params.slug });
@@ -74,28 +84,21 @@ router.put('/:slug/:id', async (req, res) => {
     res.status(301).redirect(`/articles/${article.slug}`);
 })
 
-// 댓글 추가 페이지
-router.get('/:slug/:id', async (req, res) => {
+// 댓글 삭제
+router.get('/:slug/del/:id', async (req, res) => {
     const article = await Article.findOne({ slug: req.params.slug });
-    const comments = await Comments.find({ parentTitle: article.title }).sort({ createdAt: 'desc' });
-    const comment = await Comments.findOne({ _id: req.params.id });
-    res.render('articles/edit_comments', { article: article, comments: comments, this_comment: comment, length: Object.keys(comments).length })
+    const comments = await Comments.find({ _id: req.params.id });
+    comments.forEach(comment => {
+        try {
+            comment.isDeleted = true;
+            comment.save();
+            console.log("deleted!");
+        } catch (err){
+            console.log(`catched error when deleting comments : ${err}`)
+        }
+        res.status(301).redirect(`/articles/${article.slug}`);
+    })
 });
-
-// 댓글 삭제 수정 필요 ❗️❗️❗️
-// router.get('/:slug/del/:id', async (req, res) => {
-//     const article = await Article.findOne({ slug: req.params.slug });
-//     const comments = await Comments.findOne({ _id: req.params.id });
-//     comments.isDeleted = true;
-//     try{
-//         comments.save()
-//         hideComment.style.hidden = true;   // 불가능
-//         res.redirect('/articles/'+ article.slug);
-//     } catch (err) {
-//         console.log(`catched error when deleting comments : ${err}`)
-//         res.status(301).redirect(`/articles/${article.slug}`);
-// }});
-
 
 function saveArticleAndRedirect(path) {
     return async (req, res) => {
