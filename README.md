@@ -1,9 +1,9 @@
 # Markdown Blog Project
 
 starting from October 23, 2022
-\n
-\n
-
+\
+\
+\
 ## Week 1
 11/04 - Updated comment part (Read)
 11/05 - Updated login/register part
