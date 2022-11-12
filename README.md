@@ -3,7 +3,7 @@
 starting from October 23, 2022
 \
 \
-\
+
 ## Week 1
 11/04 - Updated comment part (Read)
 11/05 - Updated login/register part
