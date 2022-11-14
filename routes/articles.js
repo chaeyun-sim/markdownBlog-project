@@ -18,15 +18,6 @@ router.get('/edit/:id', async (req, res) => {
     res.render('articles/edit', { article: article })
 });
 
-// 아티클 페이지
-router.get('/:slug', async (req, res) => {
-    const article = await Article.findOne({ slug: req.params.slug });
-    const comments = await Comments.find({ parentTitle: article.title, isDeleted : false }).sort({ createdAt: 'asc' });
-    console.log(comments)
-    if (article == null) res.redirect('/');
-    res.render('articles/show', { article: article, comments: comments, length: Object.keys(comments).length, comment: new Comments() });
-});
-
 // 메인 페이지
 router.post('/', async (req, res, next) => {
     req.article = new Article();
@@ -41,6 +32,15 @@ router.put('/:id', async (req, res, next) => {
 router.delete('/:id', async (req, res) => {
     await Article.findByIdAndDelete(req.params.id);
     res.redirect('/');
+});
+
+// 아티클 페이지
+router.get('/:slug', async (req, res) => {
+    const article = await Article.findOne({ slug: req.params.slug });
+    const comments = await Comments.find({ parentTitle: article.title, isDeleted : false }).sort({ createdAt: 'asc' }); 
+    console.log(comments)
+    if (article == null) res.redirect('/');
+    res.render('articles/show', { article: article, comments: comments, length: Object.keys(comments).length, comment: new Comments() });
 });
 
 // 댓글 추가

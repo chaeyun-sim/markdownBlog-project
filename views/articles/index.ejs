@@ -11,6 +11,13 @@
     <div class="container">
         <h1 class="mb-4 mt-4">Blog Articles</h1>
         <a href="/articles/new" class="btn btn-success">New Article</a>
+        <div style="float: right;" class="mb-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search ml-1 mr-2" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+            </svg>
+            <input type="text" name="search" id="search" placeholder="Search" value="">
+            <button class="btn" id="search_btn" name="search_btn" class="" onclick="whenClicked()">검색</button>
+        </div>
 
         <% articles.forEach(article => { %>
             <div class="card mt-4">
@@ -31,5 +38,14 @@
             </div>
         <% }) %> 
     </div>
+    <script>
+        const search = document.getElementById("search")
+
+        function whenClicked(){
+            if(search != null){
+                location.href = `/search?value=${search.value}`
+            }
+        }
+    </script>
 </body>
 </html>

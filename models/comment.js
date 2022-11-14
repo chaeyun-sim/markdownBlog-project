@@ -30,7 +30,6 @@ const commentSchema = mongoose.Schema({
     },
     slug: {
         type: String,
-        required: true,
         unique: false,
     },
     // updatedAt:{
