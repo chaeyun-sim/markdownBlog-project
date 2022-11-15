@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <title>Blog</title>
+</head>
+<body>
+    <div style="background-color: #DEF5E5";>
+        <p style="height: 120px;" class="text-center">nav</p>
+    </div>
+    <div class="container">
+        <h1 class="mb-4 mt-4">Results</h1>
+        <a href="/" class="btn btn-secondary">All Articles</a>
+        <div style="float: right;" class="mb-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search ml-1 mr-2" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+            </svg>
+            <input type="text" name="search" id="search" placeholder="Search" value="">
+            <button class="btn" id="search_btn" name="search_btn" class="" onclick="whenClicked()">검색</button>
+        </div>
+
+        <% articles.forEach(article => { %>
+            <div class="card mt-4">
+                <div class="car-body ml-3 mb-2 mt-2">
+                    <h4 class="card-title mt-2"><%= article.title %> </h4>
+                    <div class="card-subtitle text-muted mb-2">
+                        <%= article.createdAt.toLocaleDateString() %> 
+                    </div>
+                    <div class="card-text mb-2">
+                        <%= article.description %> 
+                    </div>
+                    <a href="articles/<%= article.slug %>" class="btn btn-primary mb-2 mt-2">Read More</a>
+                    <a href="articles/edit/<%= article.id %>" class="btn btn-info mb-2 mt-2">Edit</a>
+                    <form action="/articles/<%= article.id %>?_method=DELETE" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-danger mb-2 mt-2">Delete</button>
+                    </form>
+                </div>
+            </div>
+        <% }) %> 
+    </div>
+    <p class="text-center mt-2"> --- this is the last page ---</p>
+    <script>
+        const search = document.getElementById("search")
+
+        function whenClicked(){
+            if(search != null){
+                location.href = `/search?value=${search.value}`
+            }
+        }
+    </script>
+</body>
+</html>

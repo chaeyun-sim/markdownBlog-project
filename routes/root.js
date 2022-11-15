@@ -1,7 +1,10 @@
 const express = require('express');
+const db = require('node-mysql/lib/db');
 const Article = require('./../models/article');
 const Comments = require('./../models/comment');
-const User = require('./../models/user')
+const User = require('./../models/user');
+const sequelize = require("sequelize");
+const Op = sequelize.Op;
 const router = express.Router();
 
 // 참고 : https://4sii.tistory.com/16?category=792927
@@ -51,10 +54,42 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// router.get('/search', async (req, res) => {
+//     const articles = await Article.find({ title: req.query.value})
+//     let searchFor = [
+//         {
+//             $search : {
+//                 index : 'searchArticleTitle',
+//                 text: {
+//                     query: req.query.value,
+//                     path: ['title', 'description']
+//                 }
+//             }
+//         },
+//         {
+//             $sort : { _id : 1}  // 1 오름차 -1 내림차
+//         },
+//         {
+//             $limit: 10  // 개수 제한
+//         }
+//     ];
+//     Article.aggregate(searchFor);
+//     if (articles == null) res.redirect('/');
+//     res.render('articles/search', { articles: articles})
+// })
+
 router.get('/search', async (req, res) => {
-    const article = await Article.find({ title: req.query.value});
-    res.send(req.query.value)
-    // res.render('search.ejs')
+    const { value } = req.query;
+    let searchWord = [];
+    if(value){
+        searchWord = await Article.find({
+            title: {
+                $regex: new RegExp(`${value}`, "i"),
+            }
+        })
+    }
+    res.render('articles/search', { articles: searchWord });
+    // res.send(searchWord)
 })
 
 
