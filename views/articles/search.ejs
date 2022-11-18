@@ -8,9 +8,7 @@
     <title>Blog</title>
 </head>
 <body>
-    <div style="background-color: #DEF5E5";>
-        <p style="height: 120px;" class="text-center">nav</p>
-    </div>
+    <%- include("_navbar") %> 
     <div class="container">
         <h1 class="mb-4 mt-4">Results</h1>
         <a href="/" class="btn btn-secondary">All Articles</a>
@@ -44,12 +42,17 @@
     <p class="text-center mt-2"> --- this is the last page ---</p>
     <script>
         const search = document.getElementById("search")
+        const accountBtn = document.getElementById("account-btn");
+        accountBtn.hidden = true;
 
         function whenClicked(){
             if(search != null){
-                location.href = `/search?value=${search.value}`
+                location.href = `/articles/search?value=${search.value}`
             }
-        }
+        };
+        function toLogin(){
+            location.href='/login'
+        };
     </script>
 </body>
 </html>

@@ -8,8 +8,21 @@
     <title>Blog</title>
 </head>
 <body>
+    <%- include("_navbar") %> 
     <div class="container mt-4 mb-4">
         <h1 class="mb-4 mt-4 text-center">PROFILE</h1>
+        <h5 class="text-center"> Welcome, <%= user %></h5>
+        <div class="text-center">
+            <a href="/logout" class="btn btn-primary mt-4">LOGOUT</a>
+        </div>
     </div>
+    <script>
+        const accountBtn = document.getElementById("account-btn");
+        accountBtn.hidden = true;
+        
+        function toLogin(){
+            location.href='/login'
+        };
+    </script>
 </body>
 </html>

@@ -8,9 +8,7 @@
     <title>Blog</title>
 </head>
 <body>
-    <div style="background-color: #DEF5E5";>
-        <p style="height: 120px;" class="text-center">nav</p>
-    </div>
+    <%- include("_navbar") %> 
     <div class="container">
         <h1 class="mb-4 mt-4">Blog Articles</h1>
         <a href="/articles/new" class="btn btn-success">New Article</a>
@@ -27,7 +25,7 @@
                 <div class="car-body ml-3 mb-2 mt-2">
                     <h4 class="card-title mt-2"><%= article.title %> </h4>
                     <div class="card-subtitle text-muted mb-2">
-                        <%= article.createdAt.toLocaleDateString() %> 
+                        <%= article.createdAt.toLocaleDateString() %>
                     </div>
                     <div class="card-text mb-2">
                         <%= article.description %> 
@@ -43,11 +41,17 @@
     </div>
     <script>
         const search = document.getElementById("search")
+        const accountBtn = document.getElementById("account-btn");
+        accountBtn.hidden = true;
 
         function whenClicked(){
             if(search != null){
                 location.href = `/search?value=${search.value}`
             }
+        }
+
+        function toLogin(){
+            location.href='/login'
         }
     </script>
 </body>

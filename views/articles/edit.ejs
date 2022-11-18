@@ -8,9 +8,7 @@
     <title>Blog</title>
 </head>
 <body>
-    <div style="background-color: #DEF5E5";>
-        <p style="height: 120px;" class="text-center">nav</p>
-    </div>
+    <%- include("_navbar") %> 
     <div class="container">
         <h1 class="mb-4 mt-4">Edit Article</h1>
 
@@ -18,5 +16,13 @@
             <%- include("_form_fields") %> 
         </form>
     </div>
+    <script>
+        const accountBtn = document.getElementById("account-btn");
+        accountBtn.hidden = true;
+        
+        function toLogin(){
+            location.href='/login'
+        };
+    </script>
 </body>
 </html>

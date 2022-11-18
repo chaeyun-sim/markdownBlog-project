@@ -1,28 +1,31 @@
 const express = require('express');
-const db = require('node-mysql/lib/db');
 const Article = require('./../models/article');
 const Comments = require('./../models/comment');
 const User = require('./../models/user');
-const sequelize = require("sequelize");
-const Op = sequelize.Op;
 const router = express.Router();
+const jsdom = require('jsdom')
 
-// 참고 : https://4sii.tistory.com/16?category=792927
-
+// 로그인 페이지
 router.get('/login', async (req, res) => {
     const user = await User.find().sort({ username: 'desc' });
     res.render('articles/login', { user: user })
 });
 
+// 회원가입 페이지
 router.get('/register', (req, res) => {
     res.render('articles/register', { user: new User() })
 });
 
+// 개인 페이지
 router.get('/profile/:id', async (req, res) => {
     const userInfo = await User.findById(req.params.id);
-    res.render('articles/profile')
+    if(!req.session.username){
+        res.send('<h1 class="text-align">Login Please.</h1><div class="text-align"><a href="/login" class="btn btn-primary">Back to LOGIN</a></div>')
+    }
+    res.render('articles/profile', { user: req.session.username })
 })
 
+// 회원가입 시 데이터 저장
 router.post('/register', async (req, res) => {
     const user = new User({
         username: req.body.username,
@@ -40,56 +43,33 @@ router.post('/register', async (req, res) => {
     };
 });
 
+// 로그인 시 데이터 확인
 router.post('/login', async (req, res) => {
     const userInfo = await User.findOne({ username: req.body.username });
     if(userInfo){
         if(userInfo.password == req.body.password){
-            res.redirect('/profile/'+userInfo.id)
-        } else{
-            res.write("<script>alert('아이디 혹은 비밀번호를 다시 확인하세요.)'</script>");
-            res.redirect('/login')
+            req.session.username = req.body.username;
+            req.session.logined = true;
+            req.session.save(() => {
+                console.log(req.session);
+                res.redirect('/profile/'+ userInfo.id);
+            })
         }
     } else {
-        res.render('articles/no_user')
+        res.write("<script>alert('Please check your username and password again.');location.href='/login';</script>");
+        res.render('articles/no_user');
     }
 });
 
-// router.get('/search', async (req, res) => {
-//     const articles = await Article.find({ title: req.query.value})
-//     let searchFor = [
-//         {
-//             $search : {
-//                 index : 'searchArticleTitle',
-//                 text: {
-//                     query: req.query.value,
-//                     path: ['title', 'description']
-//                 }
-//             }
-//         },
-//         {
-//             $sort : { _id : 1}  // 1 오름차 -1 내림차
-//         },
-//         {
-//             $limit: 10  // 개수 제한
-//         }
-//     ];
-//     Article.aggregate(searchFor);
-//     if (articles == null) res.redirect('/');
-//     res.render('articles/search', { articles: articles})
-// })
-
-router.get('/search', async (req, res) => {
-    const { value } = req.query;
-    let searchWord = [];
-    if(value){
-        searchWord = await Article.find({
-            title: {
-                $regex: new RegExp(`${value}`, "i"),
-            }
-        })
-    }
-    res.render('articles/search', { articles: searchWord });
-    // res.send(searchWord)
+// 로그아웃 시 세션 삭제
+router.get('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if(err){
+            console.log(err);
+            return res.status(500).send("<h1>500 ERROR! </h1>")
+        }
+        res.redirect("/login")
+    })
 })
 
 
