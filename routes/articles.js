@@ -41,7 +41,7 @@ router.get('/:slug', async (req, res) => {
     const comments = await Comments.find({ parentTitle: article.title, isDeleted : false }).sort({ createdAt: 'asc' }); 
     console.log(comments)
     if (article == null) res.redirect('/');
-    res.render('articles/show', { article: article, comments: comments, length: Object.keys(comments).length, user : req.session.username, comment: new Comments() });
+    res.render('articles/show', { article: article, comments: comments, length: Object.keys(comments).length, comment: new Comments() });
 });
 
 // 댓글 추가
@@ -101,19 +101,6 @@ router.get('/:slug/del/:id', async (req, res) => {
     })
 });
 
-// 검색 기능
-router.get('/search', async (req, res) => {
-    const { value } = req.query;
-    let searchWord = [];
-    if(value){
-        searchWord = await Article.find({
-            title: {
-                $regex: new RegExp(`${value}`, "i"),
-            }
-        })
-    }
-    res.render('articles/search', { articles: searchWord, user : req.session.username });
-});
 
 function saveArticleAndRedirect(path) {
     return async (req, res) => {
