@@ -1,6 +1,7 @@
 const express = require('express');
 const Article = require('./../models/article');
 const Comments = require('./../models/comment');
+const User = require('./../models/user')
 const bodyParser = require('body-parser');
 const router = express.Router();
 const randomid = require('randomid');
@@ -9,14 +10,28 @@ const jsdom = require('jsdom');
 // const { updateOne } = require('./../models/article');
 
 // 새 아티클 저장 페이지
-router.get('/new', (req, res) => {
-    res.render('articles/new', { article: new Article(), user : req.session.username })
+router.get('/new', async (req, res) => {
+    const user = await User.findOne({ username: req.session.username });
+    let session = '';
+    let userId = '';
+    if(user) {
+        session = req.session;
+        userId = user._id.toString();
+    };
+    res.render('articles/new', { article: new Article(), session: session, userid : userId })
 });
 
 // 아티클의 수정페이지
 router.get('/edit/:id', async (req, res) => {
     const article = await Article.findById(req.params.id);
-    res.render('articles/edit', { article: article, user : req.session.username })
+    const user = await User.findOne({ username: req.session.username });
+    let session = '';
+    let userId = '';
+    if(user) {
+        session = req.session;
+        userId = user._id.toString();
+    };
+    res.render('articles/edit', { article: article, session: session, userid : userId })
 });
 
 // 메인 페이지
@@ -39,9 +54,15 @@ router.delete('/:id', async (req, res) => {
 router.get('/:slug', async (req, res) => {
     const article = await Article.findOne({ slug: req.params.slug });
     const comments = await Comments.find({ parentTitle: article.title, isDeleted : false }).sort({ createdAt: 'asc' }); 
-    console.log(comments)
+    const user = await User.findOne({ username: req.session.username });
+    let session = '';
+    let userId = '';
+    if(user) {
+        session = req.session;
+        userId = user._id.toString();
+    }
     if (article == null) res.redirect('/');
-    res.render('articles/show', { article: article, comments: comments, length: Object.keys(comments).length, comment: new Comments() });
+    res.render('articles/show', { article: article, comments: comments, length: Object.keys(comments).length, user : req.session.username, comment: new Comments(), session: session, userid : userId });
 });
 
 // 댓글 추가
@@ -69,7 +90,14 @@ router.get('/:slug/:id', async (req, res) => {
     const article = await Article.findOne({ slug: req.params.slug });
     const comments = await Comments.find({ parentTitle: article.title, isDeleted : false }).sort({ createdAt: 'asc' });
     const comment = await Comments.findOne({ _id: req.params.id });
-    res.render('articles/edit_comments', { article: article, comments: comments, this_comment: comment, user : req.session.username, length: Object.keys(comments).length })
+    const user = await User.findOne({ username: req.session.username });
+    let session = '';
+    let userId = '';
+    if(user) {
+        session = req.session;
+        userId = user._id.toString();
+    }
+    res.render('articles/edit_comments', { article: article, comments: comments, this_comment: comment, length: Object.keys(comments).length, session: session, userid : userId })
 });
 
 // 댓글 수정
@@ -101,6 +129,19 @@ router.get('/:slug/del/:id', async (req, res) => {
     })
 });
 
+// 검색 기능
+router.get('/search', async (req, res) => {
+    const { value } = req.query;
+    let searchWord = [];
+    if(value){
+        searchWord = await Article.find({
+            title: {
+                $regex: new RegExp(`${value}`, "i"),
+            }
+        })
+    }
+    res.render('articles/search', { articles: searchWord, user : req.session.username });
+});
 
 function saveArticleAndRedirect(path) {
     return async (req, res) => {
@@ -108,6 +149,7 @@ function saveArticleAndRedirect(path) {
         article.title = req.body.title;
         article.description = req.body.description;
         article.markdown = req.body.markdown;
+        article.writer = req.session.username;
         article.isDeleted = false;
         try {
             await article.save();

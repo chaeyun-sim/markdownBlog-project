@@ -1,12 +1,12 @@
 <div class="form-group ml-4">
     <p>
-        <label for="writer">작성자: </label>
-        <input required value="<%= comment.writer %>" type="text" name="writer" id="writer" class="mb-2 mt-4">
+        <label for="writer">작성자: <%= session.username %></label>
+        <!-- <input required value="" type="text" name="writer" id="writer" class="mb-2 mt-4"> -->
     </p>
     <h4 class="">RE: <%= article.title %></h4>
     <div>
         <textarea required name="post" id="post" class="w-75 mt-2 border" placeholder="댓글을 작성하시오."><%= comment.post %></textarea>
-        <button type="submit" class="btn btn-primary ml-2 mb-4">Save</button>
+        <input type="submit" class="btn btn-primary ml-2 mb-4" value="Save">
         <a href="/articles/<%= article.slug %>" class="btn btn-secondary mb-4">Cancel</a>
     </div>
 </div>

@@ -1,0 +1,11 @@
+#logout-btn {
+    padding: 0.8%; cursor: pointer; height: 35px; width: 88%; font-size: 18px; text-decoration: none; color: #F55353
+}
+
+#user {
+    margin-bottom: 40px;
+}
+
+#bigfont {
+    font-size: 250%
+}

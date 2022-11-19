@@ -1,0 +1,61 @@
+h2:hover {
+    color: black;
+    text-decoration: underline;
+}
+
+.no-text-decoration {
+    text-decoration: none
+};
+
+#blog-articles {
+    margin-bottom: 40px; margin-top: 20px; font-size: 250%;
+}
+
+#newArticles {
+    margin-left: 3px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 7px;
+    border: none;
+    cursor: pointer;
+    background-color: rgb(47, 160, 47);
+    color: white;
+    font-weight: 400;
+    font-size: 17px;
+}
+
+#searchpart {
+    float: right; margin-bottom: 30px;
+}
+
+#search_btn {
+    border-radius: 5px; background-color: white; border: 0px; cursor: pointer;
+}
+
+#container {
+    margin-top: 28px; border-style: solid; border-width: 1px; border-color: rgb(230, 230, 230); border-radius: 5px; text-align: left;
+}
+
+#card-boty {
+    margin: 17px 0px 15px 20px;
+}
+
+#deleteBtn {
+    margin-bottom: 5px; margin-right: 7px; border-radius: 10px; border: solid; border-color: #FF6464; padding: 7px ; background-color: red; color: white
+}
+
+#editBtn {
+    float:right; margin-bottom: 7px; margin-right: 5px; border-radius: 10px; border: solid; padding: 5px 10px;
+}
+
+#article-title {
+    color: rgb(113, 111, 111);
+}
+
+#desc {
+    margin-bottom: 19px; margin-left: 15px;
+}
+
+#date {
+    margin-bottom: 7px; color: gray; margin-left: 15px; margin-bottom: 15px;
+}

@@ -10,14 +10,14 @@
 <body>
     <%- include("_navbar") %> 
     <div class="container">
-        <h1 class="mb-4 mt-4 display-4"><%= article.title %></h1>
+        <h1 class="mb-2 mt-4 display-4"><%= article.title %></h1>
+        <div class="text-muted mb-3">
+            <%= article.createdAt.toLocaleDateString() %>
+        </div>
         <a href="/" class="btn btn-secondary">All Articles</a>
         <a href="/articles/edit/<%= article.id %>" class="btn btn-info">Edit</a>
         <div class="mt-4 mb-4">
             <%- article.sanitizedHtml %> 
-        </div>
-        <div class="text-muted mb-3">
-            <%= article.createdAt.toLocaleDateString() %>
         </div>
     </div>
     <div class="container">
@@ -58,10 +58,21 @@
     <script>
         const accountBtn = document.getElementById("account-btn");
         accountBtn.hidden = true;
-        
+
+        const loginBtn = document.getElementById("login-btn")
+
         function toLogin(){
             location.href='/login'
         };
+
+        if ('<%= session %>'){  // 로그인 된 상태: account 버튼 보이기
+            accountBtn.hidden = false;
+            loginBtn.hidden = true;
+        };
+
+        function toAccount(){
+            window.location.href = '/profile/<%= userid %>'
+        }
     </script>
 </body>
 </html>

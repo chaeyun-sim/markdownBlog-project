@@ -4,54 +4,78 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/style/index-style.css">
     <title>Blog</title>
 </head>
 <body>
     <%- include("_navbar") %> 
-    <div class="container">
-        <h1 class="mb-4 mt-4">Blog Articles</h1>
-        <a href="/articles/new" class="btn btn-success">New Article</a>
-        <div style="float: right;" class="mb-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search ml-1 mr-2" viewBox="0 0 16 16">
-                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-            </svg>
-            <input type="text" name="search" id="search" placeholder="Search" value="">
-            <button class="btn" id="search_btn" name="search_btn" class="" onclick="whenClicked()">검색</button>
+    <div style="margin-left: 60px; margin-right: 60px;">
+        <h1 id="blog-articles">Blog Articles</h1>
+        <input type="button" id="newArticles" class="no-text-decoration" value="New Article" onclick="whenNewArticle()">
+        <div id="searchpart">
+            <input type="text" name="search" id="search" placeholder="Search">
+            <button id="search_btn" name="search_btn" class="" onclick="whenClicked()">검색</button>
         </div>
+        <div id="articles" style="margin-bottom:50px;">
+            <% articles.forEach(article => { %>
+                <div id="container">
+                    <div id="card-body" class="">
+                        
+                        <div id="buttons" style="float:right">
+                            <form action="/articles/<%= article.id %>?_method=DELETE" method="POST" style="float:right">
+                                <button type="submit" id="delBtn" hidden>Delete</button>
+                            </form>
 
-        <% articles.forEach(article => { %>
-            <div class="card mt-4">
-                <div class="car-body ml-3 mb-2 mt-2">
-                    <h4 class="card-title mt-2"><%= article.title %> </h4>
-                    <div class="card-subtitle text-muted mb-2">
-                        <%= article.createdAt.toLocaleDateString() %>
+                            <a href="articles/edit/<%= article.id %>" id="editBtn" class="no-text-decoration" hidden>Edit</a>
+                        </div>
+
+                        <a href="articles/<%= article.slug %>" class="no-text-decoration" id="article-title"><h2 style="margin-left: 15px;"><%= article.title %></h1></a>
+                        <div id="desc">
+                            <%= article.description %> 
+                        </div>
+                        <div id="date">
+                            By <strong><%= article.writer %></strong> on <%= article.createdAt.toLocaleDateString() %>
+                        </div>
                     </div>
-                    <div class="card-text mb-2">
-                        <%= article.description %> 
-                    </div>
-                    <a href="articles/<%= article.slug %>" class="btn btn-primary mb-2 mt-2">Read More</a>
-                    <a href="articles/edit/<%= article.id %>" class="btn btn-info mb-2 mt-2">Edit</a>
-                    <form action="/articles/<%= article.id %>?_method=DELETE" method="POST" class="d-inline">
-                        <button type="submit" class="btn btn-danger mb-2 mt-2">Delete</button>
-                    </form>
                 </div>
-            </div>
-        <% }) %> 
+            <% }) %> 
+        </div>
     </div>
     <script>
         const search = document.getElementById("search")
-        const accountBtn = document.getElementById("account-btn");
-        accountBtn.hidden = true;
 
         function whenClicked(){
-            if(search){
-                location.href = `/search?value=${search.value}`
+            if(search.value != null){
+                location.href = `/article/search?value=${search.value}`
             }
-        }
+        };
+
+        function whenNewArticle(){
+            if(!'<%= session.username %>'){
+                alert("Login before you write.");
+                location.href = '/';
+            } else {
+                location.href = 'articles/new'   
+            }
+        };
+
+        const accountBtn = document.getElementById("account-btn");
+        const loginBtn = document.getElementById("login-btn")
+        accountBtn.hidden = true;
 
         function toLogin(){
             location.href='/login'
+        };
+
+        if ('<%= session %>'){
+            accountBtn.hidden = false;
+            loginBtn.hidden = true;
+            // editBtn.hidden = false;
+            // delBtn.hidden = false;
+        };
+
+        function toAccount(){
+            window.location.href = '/profile/<%= userid %>'
         }
     </script>
 </body>

@@ -1,0 +1,23 @@
+#div-body {
+    justify-content: center;  text-align: center;
+}
+
+#username {
+    width: 85%; height: 26px; margin-top: 10px; border-style: solid; border-radius: 5px; border-width: 1px; border-color: rgb(205, 203, 203);
+}
+
+#password {
+    width: 85%; height: 26px;  margin-top: 10px; border-style: solid; border-radius: 5px; border-width: 1px; border-color: rgb(205, 203, 203);
+}
+
+#div-border {
+    text-align: center; margin: 20px; border-style: solid; border-radius: 5px; border-color: rgb(205, 203, 203); border-width: 1px;
+}
+
+#login-btn {
+    border-radius: 50px; border: none; cursor: pointer; height: 35px; width: 88%; background-color: #2192FF; color: white; margin-top: 19px; margin-bottom: 30px; font-size: 16px;
+}
+
+#div-login {
+    width: 35%; height:80%; display: inline-block;
+}

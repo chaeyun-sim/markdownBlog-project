@@ -10,14 +10,17 @@
 <body>
     <%- include("_navbar") %> 
     <div class="container">
-        <h1 class="mb-4 mt-4 display-4"><%= article.title %></h1>
-        <a href="/" class="btn btn-secondary">All Articles</a>
-        <a href="/articles/edit/<%= article.id %>" class="btn btn-info">Edit</a>
-        <div class="mt-4 mb-4">
-            <%- article.sanitizedHtml %> 
-        </div>
+        <h1 class="mb-2 mt-4 display-4"><%= article.title %></h1>
         <div class="text-muted mb-3">
             <%= article.createdAt.toLocaleDateString() %>
+        </div>
+        <a href="/" class="btn btn-secondary">All Articles</a>
+        <a href="/articles/edit/<%= article.id %>" class="btn btn-info">Edit</a>
+        <form action="/articles/<%= article.id %>?_method=DELETE" method="POST" style="float: left">
+            <button type="submit" id="delBtn" style="margin-bottom: 5px; margin-right: 7px; border-radius: 10px; border: solid; border-color: #FF6464; padding: 7px ; background-color: red; color: white">Delete</button>
+        </form>
+        <div class="mt-4 mb-4">
+            <%- article.sanitizedHtml %> 
         </div>
     </div>
     <div class="container">
@@ -30,7 +33,7 @@
                         <div class="mb-2 mt-2">
                             <h4 style="float: left">RE: <%= comment.parentTitle %></h4>
                             <div class="card-subtitle text-muted mr-3 mt-1" style="float: right">
-                                <%= comment.createdAt.toLocaleDateString() %> by <strong><%= comment.writer %></strong>
+                                <%= comment.createdAt.toLocaleDateString() %> by <strong><%= session.username %></strong>
                             </div>
                         </div>
                         <br><br>
@@ -60,19 +63,36 @@
     <script>
         const writeButton = document.getElementById("writeButton");
         const newComment = document.getElementById("newComment");
-        const accountBtn = document.getElementById("account-btn");
-        
-        accountBtn.hidden = true;
+
         newComment.hidden = true;
         
         function hideButton(){
-            writeButton.hidden = true;
-            newComment.hidden = false;
+            if (!'<%= session %>'){
+                alert("Login before you write.");
+                location.href = '/articles/<%= article.slug %>';
+            } else {
+                writeButton.hidden = true;
+                newComment.hidden = false;
+            }
         };
+
+        const accountBtn = document.getElementById("account-btn");
+        accountBtn.hidden = true;
+
+        const loginBtn = document.getElementById("login-btn")
 
         function toLogin(){
             location.href='/login'
         };
+
+        if ('<%= session %>'){
+            accountBtn.hidden = false;
+            loginBtn.hidden = true;
+        };
+
+        function toAccount(){
+            window.location.href = '/profile/<%= userid %>'
+        }
     </script>
 </body>
 </html>

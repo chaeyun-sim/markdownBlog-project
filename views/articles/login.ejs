@@ -4,36 +4,54 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/style/login-style.css">
     <title>Blog</title>
 </head>
 <body>
-    <div class="pt-5">  
-        <h1 class="text-center mb-4"> Login </h1>  
-        <div class="container mt-4">
-            <div class="card card-body mx-auto"  style="width: 350px">
-                <form id="submitForm" action="/login" method="post" _lpchecked="1">  
-                    <input type="hidden" name="_csrf">  
-                    <div class="form-group required">  
-                        <label for="username" class="mt-2 align-items-center"> Enter your Name </label>  
-                        <input type="text" class="form-control text-lowercase mt-2" id="username" required="" name="username" value="<%= user.username %>">  
-                    </div>    
+    <%- include("_navbar") %> 
 
-                    <div class="form-group required">  
-                        <label for="password" class="mt-2 align-items-center"> Enter your Password </label>  
-                        <input type="password" class="mt-2 form-control" required="" id="password" name="password" value="<%= user.password %>">  
-                    </div>  
-
-                    <div class="form-group pt-1">  
-                        <button class="btn btn-primary btn-block mt-4" type="submit"> Log In </button>  
-                    </div>  
+    <div id="div-body">
+        <div>
+            <h1 style="font-size: 250%"> Login </h1>
+        </div>
+        <div id="div-login">
+            <div id="div-border">
+                <form action="/login" method="post" style="margin: 40px 20px 0px 20px">
+                    <div style=" margin-bottom: 30px;">
+                        <label for="username" style="margin-right: 38%;">Enter your Username</label><br>
+                        <input required type="text" id="username" name="username" value="<%= user.username %>"><br>
+                    </div>
+                        <label for="password" style="margin-right: 38%; margin-top: 5px;">Enter your Password</label><br>
+                        <input required type="password" id="password" name="password" value="<%= user.password %>"> <br>
+                    <div style="margin-top: 20px;">  
+                        <input id="login-btn" type="submit" value="Login">
+                    </div>
                 </form>  
-                <p class="pt-3 text-center">  
-                    <span class="text-muted"> Not a member? </span>  
-                    <a href="/register"> Sign up </a>  
+                <p style="margin-bottom: 30px;">  
+                    <span style="color: gray"> Not a member? </span>  
+                    <a href="/register" style="color: #F900BF; text-decoration: none;"> Sign up </a>  
                 </p>  
-            </div>  
-        </div>  
+            </div>
+        </div>
     </div>
+    <script>
+        const accountBtn = document.getElementById("account-btn");
+        accountBtn.hidden = true;
+
+        const loginBtn = document.getElementById("login-btn")
+
+        function toLogin(){
+            location.href='/login'
+        };
+
+        if ('<%= session %>'){
+            accountBtn.hidden = false;
+            loginBtn.hidden = true;
+        };
+
+        function toAccount(){
+            window.location.href = '/profile/<%= userid %>'
+        }
+    </script>
 </body>
 </html>
