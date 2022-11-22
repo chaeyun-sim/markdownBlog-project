@@ -1,8 +1,7 @@
 <div class="form-group ml-4">
-    <p>
-        <label for="writer">작성자: </label>
-        <input required value="<%= this_comment.writer %>" type="text" name="writer" id="writer" class="mb-2 mt-4" placeholder="<%= this_comment.writer %>">
-    </p>
+    <div style="margin-top: 80px;">
+        <label for="writer">작성자: <strong><%= this_comment.writer %></strong></label>
+    </div>
     <h4 class="">RE: <%= this_comment.parentTitle %></h4>
     <div>
         <textarea required name="post" id="post" class="w-75 mt-2 border" placeholder=""><%= this_comment.post %></textarea>

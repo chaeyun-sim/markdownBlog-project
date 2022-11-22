@@ -70,7 +70,7 @@ router.post('/:slug/comment', async (req, res) => {
     const article = await Article.findOne({ slug: req.params.slug });
     const comment = new Comments({
         parentTitle: article.title,
-        writer: req.body.writer,
+        writer: req.session.username,
         post: req.body.post,
         isDeleted: false,
         slug: randomid(17),
@@ -106,14 +106,13 @@ router.put('/:slug/:id', async (req, res) => {
     await Comments.findByIdAndUpdate(
         req.params.id,
         {
-            writer: req.body.writer,
             post: req.body.post,
         },
     )
     res.status(301).redirect(`/articles/${article.slug}`);
 })
 
-// 댓글 삭제
+// 댓글 삭제å
 router.get('/:slug/del/:id', async (req, res) => {
     const article = await Article.findOne({ slug: req.params.slug });
     const comments = await Comments.find({ _id: req.params.id });

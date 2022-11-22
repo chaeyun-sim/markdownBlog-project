@@ -20,10 +20,21 @@
     <script>
         const accountBtn = document.getElementById("account-btn");
         accountBtn.hidden = true;
-        
+
+        const loginBtn = document.getElementById("login-btn")
+
         function toLogin(){
             location.href='/login'
         };
+
+        if ('<%= session.username %>'){
+            accountBtn.hidden = false;
+            loginBtn.hidden = true;
+        };
+
+        function toAccount(){
+            window.location.href = '/profile/<%= userid %>'
+        }
     </script>
 </body>
 </html>

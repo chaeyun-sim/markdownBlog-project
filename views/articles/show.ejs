@@ -33,7 +33,7 @@
                         <div class="mb-2 mt-2">
                             <h4 style="float: left">RE: <%= comment.parentTitle %></h4>
                             <div class="card-subtitle text-muted mr-3 mt-1" style="float: right">
-                                <%= comment.createdAt.toLocaleDateString() %> by <strong><%= session.username %></strong>
+                                <%= comment.createdAt.toLocaleDateString() %> by <strong><%= comment.writer %></strong>
                             </div>
                         </div>
                         <br><br>

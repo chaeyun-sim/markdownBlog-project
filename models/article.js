@@ -21,6 +21,10 @@ const articleSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    writer: {
+        type: String,
+        required: true,
+    },
     isDeleted: {
         type: Boolean,
         required: true,
