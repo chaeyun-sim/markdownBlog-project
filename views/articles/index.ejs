@@ -9,9 +9,12 @@
 </head>
 <body>
     <%- include("_navbar") %> 
+
     <div style="margin-left: 60px; margin-right: 60px;">
-        <h1 id="blog-articles">Blog Articles</h1>
-        <input type="button" id="newArticles" class="no-text-decoration" value="New Article" onclick="whenNewArticle()">
+        <h1 style=" margin-bottom: 40px; margin-top: 20px; font-size: 250%;">Blog Articles</h1>
+
+        <button id="new" class="no-text-decoration" onclick="whenNewArticle()">New Article</button>
+
         <div id="searchpart">
             <input type="text" name="search" id="search" placeholder="Search">
             <button id="search_btn" name="search_btn" class="" onclick="whenClicked()">검색</button>
@@ -23,10 +26,10 @@
                         
                         <div id="buttons" style="float:right">
                             <form action="/articles/<%= article.id %>?_method=DELETE" method="POST" style="float:right">
-                                <button type="submit" id="delBtn" hidden>Delete</button>
+                                <button type="submit" id="delBtn" >Delete</button>
                             </form>
 
-                            <a href="articles/edit/<%= article.id %>" id="editBtn" class="no-text-decoration" hidden>Edit</a>
+                            <a href="articles/edit/<%= article.id %>" id="editBtn" class="no-text-decoration">Edit</a>
                         </div>
 
                         <a href="articles/<%= article.slug %>" class="no-text-decoration" id="article-title"><h2 style="margin-left: 15px;"><%= article.title %></h1></a>
@@ -61,7 +64,11 @@
 
         const accountBtn = document.getElementById("account-btn");
         const loginBtn = document.getElementById("login-btn")
+        const editBtn = document.getElementById("editBtn");
+        const delBtn = document.getElementById("delBtn");
         accountBtn.hidden = true;
+        editBtn.hidden = true;
+        delBtn.hidden = true;
 
         function toLogin(){
             location.href='/login'
@@ -70,8 +77,9 @@
         if ('<%= session.username %>'){
             accountBtn.hidden = false;
             loginBtn.hidden = true;
-            // editBtn.hidden = false;
-            // delBtn.hidden = false;
+            
+            editBtn.hidden = false;
+            delBtn.hidden = false;
         };
 
         function toAccount(){
