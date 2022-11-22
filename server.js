@@ -2,12 +2,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Article = require('./models/article');
 const Comments = require('./models/comment');
+const User = require('./models/user');
 const articleRouter = require('./routes/articles');
 const rootRouter = require('./routes/root')
 const methodOverride = require('method-override');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const jsdom = require('jsdom')
+const jsdom = require('jsdom');
+const user = require('./models/user');
 const FileStore = require('session-file-store')(session);
 
 const app = express();
@@ -20,6 +22,7 @@ const db = mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: tr
 });
 
 app.set('view engine', 'ejs');
+app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
@@ -33,7 +36,25 @@ app.use(session({
 
 app.get('/', async (req, res) => {
     const articles = await Article.find().sort({ createdAt: 'desc' });
-    res.render('articles/index', { articles: articles, user : req.session.username });
+    const user = await User.findOne({ username: req.session.username });
+    let session = '';
+    let userId = '';
+    if(user) {
+        session = req.session;
+        userId = user._id.toString();
+    };
+    res.render('articles/index', { articles: articles, user : req.session.username, session : req.session, userid: userId });
+});
+
+// 로그아웃 시 세션 삭제
+app.get('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if(err){
+            console.log(err);
+            return res.status(500).send("<h1>500 ERROR! </h1>")
+        }
+        res.redirect("/login")
+    })
 });
 
 app.use('/articles', articleRouter);

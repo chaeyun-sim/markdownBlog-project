@@ -1,0 +1,44 @@
+#div-body {
+    justify-content: center;
+    text-align: center;
+    justify-items: center;
+}
+
+#div-border {
+    width: 405px;
+    height: 580px;
+    border-style: solid;
+    border-radius: 5px;
+    border-color: rgb(205, 203, 203);
+    border-width: 1px;
+}
+
+#div-signup {
+    width: 390px;
+    height: 400px;
+    display: inline-block;
+    text-align: center;
+    justify-content: center;
+}
+
+.label-shape {
+    margin-right: 150px;
+}
+
+.form-shape {
+    width: 290px;
+    height: 33px;  
+    margin-top: 10px; border-style: solid; border-radius: 5px; border-width: 1px; border-color: rgb(205, 203, 203);
+}
+
+#signup-btn {
+    border-radius: 50px; border: none; cursor: pointer;
+    height: 35px;
+    width: 290px; background-color: #2192FF; color: white; margin-top: 19px; margin-bottom: 30px; font-size: 16px;
+}
+
+#back-btn {
+    border-radius: 50px; border: none; cursor: pointer;
+    height: 35px;
+    width: 290px; background-color: #EEEEEE; color: black; margin-top: 19px; margin-bottom: 30px; font-size: 16px;
+}

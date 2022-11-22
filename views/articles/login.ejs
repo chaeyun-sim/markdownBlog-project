@@ -16,13 +16,15 @@
         </div>
         <div id="div-login">
             <div id="div-border">
-                <form action="/login" method="post" style="margin: 40px 20px 0px 20px">
-                    <div style=" margin-bottom: 30px;">
-                        <label for="username" style="margin-right: 38%;">Enter your Username</label><br>
+                <form action="/login" method="post">
+                    <div style="margin-bottom: 30px; margin-top: 50px;">
+                        <label for="username" style="margin-right: 150px;">Enter your Username</label><br>
                         <input required type="text" id="username" name="username" value="<%= user.username %>"><br>
                     </div>
-                        <label for="password" style="margin-right: 38%; margin-top: 5px;">Enter your Password</label><br>
-                        <input required type="password" id="password" name="password" value="<%= user.password %>"> <br>
+                    <div style=" margin-bottom: 30px;">
+                        <label for="password" style="margin-right: 150px;">Enter your Password</label><br>
+                        <input required type="text" id="password" name="password" value="<%= user.password %>"><br>
+                    </div>
                     <div style="margin-top: 20px;">  
                         <input id="login-btn" type="submit" value="Login">
                     </div>
@@ -44,7 +46,7 @@
             location.href='/login'
         };
 
-        if ('<%= session %>'){
+        if ('<%= session.username %>'){
             accountBtn.hidden = false;
             loginBtn.hidden = true;
         };

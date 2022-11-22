@@ -67,7 +67,7 @@
             location.href='/login'
         };
 
-        if ('<%= session %>'){
+        if ('<%= session.username %>'){
             accountBtn.hidden = false;
             loginBtn.hidden = true;
             // editBtn.hidden = false;

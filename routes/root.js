@@ -7,13 +7,27 @@ const jsdom = require('jsdom')
 
 // 로그인 페이지
 router.get('/login', async (req, res) => {
-    const user = await User.find().sort({ username: 'desc' });
-    res.render('articles/login', { user: user })
+    const users = await User.find().sort({ username: 'desc' });
+    const user = await User.findOne({ username: req.session.username });
+    let session = '';
+    let userId = '';
+    if(user) {
+        session = req.session;
+        userId = user._id.toString();
+    };
+    res.render('articles/login', { user: users, session: session, userid : userId })
 });
 
 // 회원가입 페이지
-router.get('/register', (req, res) => {
-    res.render('articles/register', { user: new User() })
+router.get('/register', async (req, res) => {
+    const user = await User.findOne({ username: req.session.username });
+    let session = '';
+    let userId = '';
+    if(user) {
+        session = req.session;
+        userId = user._id.toString();
+    };
+    res.render('articles/register', { user: new User(), session: session, userid : userId })
 });
 
 // 개인 페이지
@@ -22,7 +36,14 @@ router.get('/profile/:id', async (req, res) => {
     if(!req.session.username){
         res.send('<h1 class="text-align">Login Please.</h1><div class="text-align"><a href="/login" class="btn btn-primary">Back to LOGIN</a></div>')
     }
-    res.render('articles/profile', { user: req.session.username })
+    const user = await User.findOne({ username: req.session.username });
+    let session = '';
+    let userId = '';
+    if(user) {
+        session = req.session;
+        userId = user._id.toString();
+    };
+    res.render('articles/profile', { user: req.session.username, session: session, userid : userId })
 })
 
 // 회원가입 시 데이터 저장
@@ -59,17 +80,6 @@ router.post('/login', async (req, res) => {
         res.write("<script>alert('Please check your username and password again.');location.href='/login';</script>");
         res.render('articles/no_user');
     }
-});
-
-// 로그아웃 시 세션 삭제
-router.get('/logout', (req, res) => {
-    req.session.destroy(err => {
-        if(err){
-            console.log(err);
-            return res.status(500).send("<h1>500 ERROR! </h1>")
-        }
-        res.redirect("/login")
-    })
 });
 
 // 검색 기능
