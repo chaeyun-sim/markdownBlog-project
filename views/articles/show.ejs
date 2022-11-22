@@ -4,57 +4,62 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/style/show-style.css">
     <title>Blog</title>
 </head>
 <body>
     <%- include("_navbar") %> 
-    <div class="container">
-        <h1 class="mb-2 mt-4 display-4"><%= article.title %></h1>
-        <div class="text-muted mb-3">
+
+    <div class="container" style=" margin-bottom: 20px;">
+        <h1 style="font-size: 250%;"><%= article.title %></h1>
+        <div class="date-text">
             <%= article.createdAt.toLocaleDateString() %>
         </div>
-        <a href="/" class="btn btn-secondary">All Articles</a>
-        <a href="/articles/edit/<%= article.id %>" class="btn btn-info">Edit</a>
-        <form action="/articles/<%= article.id %>?_method=DELETE" method="POST" style="float: left">
-            <button type="submit" id="delBtn" style="margin-bottom: 5px; margin-right: 7px; border-radius: 10px; border: solid; border-color: #FF6464; padding: 7px ; background-color: red; color: white">Delete</button>
-        </form>
-        <div class="mt-4 mb-4">
+        <div>
             <%- article.sanitizedHtml %> 
         </div>
+        <div>
+            <a href="/" class="btn" id="article-btn">All Articles</a>
+            <a href="/articles/edit/<%= article.id %>" class="btn" id="editBtn">Edit</a>
+            <div style="float: left;">
+                <form action="/articles/<%= article.id %>?_method=DELETE" method="POST">
+                    <button type="submit" class="btn" id="delBtn">Delete</button>
+                </form>
+            </div>
+        </div><br>
     </div>
-    <div class="container">
-        <h3 class="mt-4"><%= length %> Comments</h3>
-        <hr style='border-style: dashed'>
-        <div id="comments">
+    <div style="margin-left: 60px; margin-right: 60px; margin-top: 50px;">
+        <h3 id="comment-name"><%= length %> Comments</h3>
+        <hr>
+        <div id="comments" style="margin-bottom: 30px;">
             <% comments.forEach(comment => { %>
-                <div class="mt-4 mb-4">
-                    <div class="mb-4 mt-4 border-bottom"  id="post">    
-                        <div class="mb-2 mt-2">
-                            <h4 style="float: left">RE: <%= comment.parentTitle %></h4>
-                            <div class="card-subtitle text-muted mr-3 mt-1" style="float: right">
+                <div id='card'>
+                    <div id='card-body' id="post">    
+                        <div>
+                            <div class="mb-4">
+                                <a href="/articles/<%= article.slug%>/del/<%= comment._id %>" class="btn" id="commentDelete" style="float:right; height:35px; margin-right: 15px;">D</a>
+                                <a href="/articles/<%= article.slug%>/<%= comment._id %>" class="btn" style="float:right; height:35px" id='commentEdit'>E</a>
+                            </div>
+                            <h4 style="font-size: 22px; margin-left: 20px;">RE: <%= comment.parentTitle %></h4>
+                            <div style=" margin-top: 10px; margin-bottom: 19px; margin-left: 20px;">
+                                <%= comment.post %> 
+                            </div>
+                            <div class="date-text" style="float: right; margin-top: 10px; margin-right: 20px;">
                                 <%= comment.createdAt.toLocaleDateString() %> by <strong><%= comment.writer %></strong>
                             </div>
                         </div>
                         <br><br>
-                        <div class="card-text mb-4" style="float: left">
-                            <%= comment.post %> 
-                        </div>
-                        <div class="mb-4">
-                            <a href="/articles/<%= article.slug%>/del/<%= comment._id %>" class="btn btn-danger mr-3 mb-4" style="float:right; height:35px">D</a>
-                            <a href="/articles/<%= article.slug%>/<%= comment._id %>" class="btn btn-info mr-2" style="float:right; height:35px" id='editButton'>E</a>
-                        </div>
                         <br>
                     </div>
                 </div>
             <% }) %> 
         </div>
     </div>
-    <div class="container border-0 ml-6 mb-4" id="writeButton">
-            <button type="submit" class="btn btn-primary mt-4 mb-4" onclick="hideButton()">Write</button>
+    <div class="container" id="writeButton">
+            <button type="submit" class="btn" onclick="hideButton()">Write</button>
     </div>
-    <div class="container">
-        <div class="card-text border mt-4" style="height:0%" id="newComment">
+    <div >
+        <div class="container" id="newComment">
             <form action="/articles/<%= article.slug %>/comment" method="POST">
                 <%- include("_comments_fields") %> 
             </form>

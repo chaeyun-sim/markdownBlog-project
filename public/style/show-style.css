@@ -1,0 +1,57 @@
+.date-text {
+    color: gray; font-weight: 600;
+}
+
+.container {
+    margin-left: 60px; margin-right: 60px;
+}
+
+#article-btn {
+    margin-top: 5px;
+    border-radius: 10px; border-color: none; padding: 7px ; background-color: gray; color: white;
+}
+
+#delBtn {
+    border-radius: 10px; border-color: #FF6464; padding: 7px ; background-color: red; color: white
+}
+
+#editBtn {
+    margin-top: 5px; border-radius: 10px; border-color: none; padding: 7px ; background-color: #7ECA9C; color: white; 
+}
+
+h3 {
+    font-size: 25px;
+}
+
+hr {
+    border-style: dashed;
+    color: #EEEEEE;
+}
+
+#card {
+    margin-top: 28px; border-style: solid; border-width: 1px; border-color: rgb(230, 230, 230); border-radius: 5px; text-align: left;
+}
+
+#card-boty {
+    margin: 17px 0px 10px 20px;
+}
+
+.btn {
+    margin-bottom: 5px; margin-right: 7px; border: solid; text-decoration: none;
+}
+
+#commentDelete {
+}
+
+#commentEdit {
+    
+}
+
+#writeButton {
+    
+}
+
+#post_text {
+    width: 550px;
+    height: 100px; margin-left: 20px; border-style: solid; border-radius: 5px; border-width: 1px; border-color: rgb(205, 203, 203);
+}

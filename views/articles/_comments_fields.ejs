@@ -1,12 +1,11 @@
-<div class="form-group ml-4">
-    <p>
-        <label for="writer">작성자: <%= session.username %></label>
-        <!-- <input required value="" type="text" name="writer" id="writer" class="mb-2 mt-4"> -->
+<div style="border-style: solid; border-width: 1px; border-color: rgb(230, 230, 230); border-radius: 5px; text-align: left;">
+    <p style="margin-right: 30px; float: right">
+        <label for="writer" style="font-weight: 500">작성자: <%= session.username %></label>
     </p>
-    <h4 class="">RE: <%= article.title %></h4>
-    <div>
-        <textarea required name="post" id="post" class="w-75 mt-2 border" placeholder="댓글을 작성하시오."><%= comment.post %></textarea>
-        <input type="submit" class="btn btn-primary ml-2 mb-4" value="Save">
-        <a href="/articles/<%= article.slug %>" class="btn btn-secondary mb-4">Cancel</a>
+    <h4 style="margin-left: 20px; font-size: 22px;">RE: <%= article.title %></h4>
+    <textarea required name="post" id="post_text" placeholder="댓글을 작성하시오." style="margin-bottom: 20px;"><%= comment.post %></textarea>
+    <div style="float:right; margin-top: 80px">
+        <input type="submit" class="btn" style="margin-bottom: 20px;" value="Save">
+        <a href="/articles/<%= article.slug %>" style="margin-bottom: 20px; margin-right: 40px;" class="btn">Cancel</a>
     </div>
 </div>
