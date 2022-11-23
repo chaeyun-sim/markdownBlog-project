@@ -4,55 +4,73 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/style/index-style.css">
+    <link rel="stylesheet" type="text/css" href="/style/common-style.css">
+    <link rel="stylesheet" type="text/css" href="/style/nav-style.css">
     <title>Blog</title>
 </head>
 <body>
     <%- include("_navbar") %> 
-    <div class="container">
-        <h1 class="mb-4 mt-4">Results</h1>
-        <a href="/" class="btn btn-secondary">All Articles</a>
-        <div style="float: right;" class="mb-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search ml-1 mr-2" viewBox="0 0 16 16">
-                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-            </svg>
-            <input type="text" name="search" id="search" placeholder="Search" value="">
-            <button class="btn" id="search_btn" name="search_btn" class="" onclick="whenClicked()">검색</button>
-        </div>
 
-        <% articles.forEach(article => { %>
-            <div class="card mt-4">
-                <div class="car-body ml-3 mb-2 mt-2">
-                    <h4 class="card-title mt-2"><%= article.title %> </h4>
-                    <div class="card-subtitle text-muted mb-2">
-                        <%= article.createdAt.toLocaleDateString() %> 
+    <div style="margin-left: 60px; margin-right: 60px;">
+        <h1 style=" margin-bottom: 20px; margin-top: 40px; font-size: 250%;">This is your result</h1>
+        <h1 style="font-weight: 500; font-size: 28px; color: rgb(59, 59, 59)"> <%= Object.keys(articles).length %> articles </h1>
+
+        <div id="articles" style="margin-bottom:50px; margin-top: 40px;">
+            <% articles.forEach(article => { %>
+                <div id="container">
+                    <div id="card-body" class="">
+                        
+                        <div id="buttons" style="float:right">
+                            <form action="/articles/<%= article.id %>?_method=DELETE" method="POST" style="float:right">
+                                <button type="submit" id="delBtn" >Delete</button>
+                            </form>
+
+                            <a href="articles/edit/<%= article.id %>" id="editBtn" class="no-text-decoration">Edit</a>
+                        </div>
+
+                        <a href="articles/<%= article.slug %>" class="no-text-decoration" id="article-title"><h2 style="margin-left: 15px;"><%= article.title %></h1></a>
+                        <div id="desc">
+                            <%= article.description %> 
+                        </div>
+                        <div id="date">
+                            By <strong><%= article.writer %></strong> on <%= article.createdAt.toLocaleDateString() %>
+                        </div>
                     </div>
-                    <div class="card-text mb-2">
-                        <%= article.description %> 
-                    </div>
-                    <a href="articles/<%= article.slug %>" class="btn btn-primary mb-2 mt-2">Read More</a>
-                    <a href="articles/edit/<%= article.id %>" class="btn btn-info mb-2 mt-2">Edit</a>
-                    <form action="/articles/<%= article.id %>?_method=DELETE" method="POST" class="d-inline">
-                        <button type="submit" class="btn btn-danger mb-2 mt-2">Delete</button>
-                    </form>
                 </div>
-            </div>
-        <% }) %> 
+            <% }) %> 
+        </div>
     </div>
-    <p class="text-center mt-2"> --- this is the last page ---</p>
+    <p style="text-align: center; color: rgb(59, 59, 59)"> --- this is the last page ---</p>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script>
-        const search = document.getElementById("search")
         const accountBtn = document.getElementById("account-btn");
         accountBtn.hidden = true;
 
-        function whenClicked(){
-            if(search != null){
-                location.href = `/search?value=${search.value}`
-            }
-        }
+        const loginBtn = document.getElementById("login-btn")
 
         function toLogin(){
             location.href='/login'
+        };
+
+        if ('<%= session.username %>'){
+            accountBtn.hidden = false;
+            loginBtn.hidden = true;
+        };
+
+        function toAccount(){
+            window.location.href = '/profile/<%= userid %>'
+        };
+
+        const search = document.getElementById("search")
+        function whenClicked(){
+            if(search.value != null){
+                location.href = `/article/search?value=${search.value}`
+            }
+        };
+
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
         };
     </script>
 </body>

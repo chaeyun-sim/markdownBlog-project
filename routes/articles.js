@@ -128,20 +128,6 @@ router.get('/:slug/del/:id', async (req, res) => {
     })
 });
 
-// 검색 기능
-router.get('/search', async (req, res) => {
-    const { value } = req.query;
-    let searchWord = [];
-    if(value){
-        searchWord = await Article.find({
-            title: {
-                $regex: new RegExp(`${value}`, "i"),
-            }
-        })
-    }
-    res.render('articles/search', { articles: searchWord, user : req.session.username });
-});
-
 function saveArticleAndRedirect(path) {
     return async (req, res) => {
         let article = req.article;

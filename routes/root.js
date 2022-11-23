@@ -83,7 +83,8 @@ router.post('/login', async (req, res) => {
 });
 
 // 검색 기능
-router.get('/search', async (req, res) => {
+router.get('/article/search', async (req, res) => {
+    const user = await User.findOne({ username: req.session.username });
     const { value } = req.query;
     let searchWord = [];
     if(value){
@@ -92,8 +93,14 @@ router.get('/search', async (req, res) => {
                 $regex: new RegExp(`${value}`, "i"),
             }
         })
+    };
+    let session = '';
+    let userId = '';
+    if(user) {
+        session = req.session;
+        userId = user._id.toString();
     }
-    res.render('articles/search', { articles: searchWord });
+    res.render('articles/search', { articles: searchWord, session: session, userid : userId });
 });
 
 

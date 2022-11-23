@@ -5,20 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/style/index-style.css">
+    <link rel="stylesheet" type="text/css" href="/style/common-style.css">
+    <link rel="stylesheet" type="text/css" href="/style/nav-style.css">
     <title>Blog</title>
 </head>
 <body>
     <%- include("_navbar") %> 
 
     <div style="margin-left: 60px; margin-right: 60px;">
-        <h1 style=" margin-bottom: 40px; margin-top: 20px; font-size: 250%;">Blog Articles</h1>
+        <h1 style=" margin-bottom: 40px; margin-top: 40px; font-size: 250%;">Blog Articles</h1>
 
         <input type="button" id="new_article" class="no-text-decoration" onclick="whenNewArticle()" value="New Article">
 
-        <div id="searchpart">
-            <input type="text" name="search" id="search" placeholder="Search">
-            <button id="search_btn" name="search_btn" class="" onclick="whenClicked()">검색</button>
-        </div>
         <div id="articles" style="margin-bottom:50px;">
             <% articles.forEach(article => { %>
                 <div id="container">
@@ -44,9 +42,9 @@
             <% }) %> 
         </div>
     </div>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script>
         const search = document.getElementById("search")
-
         function whenClicked(){
             if(search.value != null){
                 location.href = `/article/search?value=${search.value}`
@@ -67,8 +65,8 @@
         const editBtn = document.getElementById("editBtn");
         const delBtn = document.getElementById("delBtn");
         accountBtn.hidden = true;
-        editBtn.hidden = true;
-        delBtn.hidden = true;
+        // editBtn.hidden = true;
+        // delBtn.hidden = true;
 
         function toLogin(){
             location.href='/login'
@@ -84,6 +82,10 @@
 
         function toAccount(){
             window.location.href = '/profile/<%= userid %>'
+        }
+
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
         }
     </script>
 </body>
