@@ -97,7 +97,7 @@ router.get('/:slug/:id', async (req, res) => {
         session = req.session;
         userId = user._id.toString();
     }
-    res.render('articles/edit_comments', { article: article, comments: comments, this_comment: comment, length: Object.keys(comments).length, session: session, userid : userId })
+    res.render('comments/edit_comments', { article: article, comments: comments, this_comment: comment, length: Object.keys(comments).length, session: session, userid : userId })
 });
 
 // 댓글 수정
@@ -107,12 +107,13 @@ router.put('/:slug/:id', async (req, res) => {
         req.params.id,
         {
             post: req.body.post,
+            isUpdated: true,
         },
     )
     res.status(301).redirect(`/articles/${article.slug}`);
 })
 
-// 댓글 삭제å
+// 댓글 삭제
 router.get('/:slug/del/:id', async (req, res) => {
     const article = await Article.findOne({ slug: req.params.slug });
     const comments = await Comments.find({ _id: req.params.id });
@@ -136,6 +137,7 @@ function saveArticleAndRedirect(path) {
         article.markdown = req.body.markdown;
         article.writer = req.session.username;
         article.isDeleted = false;
+        article.isUpdated = false;
         try {
             await article.save();
             res.redirect('/articles/'+ article.slug);

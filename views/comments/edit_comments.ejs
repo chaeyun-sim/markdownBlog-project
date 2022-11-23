@@ -10,17 +10,16 @@
     <title>Blog</title>
 </head>
 <body>
-    <%- include("_navbar") %> 
-
+    <%- include("../articles/_navbar") %> 
     <div class="container" style=" margin-bottom: 20px;">
         <h1 style="font-size: 250%;"><%= article.title %></h1>
         <div class="date-text">
             <%= article.createdAt.toLocaleDateString() %>
         </div>
-        <div style="margin-bottom: 40px;">
+        <div>
             <%- article.sanitizedHtml %> 
         </div>
-        <div>
+        <div style="margin-top: 40px;">
             <a href="/" class="btn" id="article-btn">All Articles</a>
             <a href="/articles/edit/<%= article.id %>" class="btn" id="editBtn">Edit</a>
             <div style="float: left;">
@@ -34,56 +33,40 @@
         <h3 id="comment-name"><%= length %> Comments</h3>
         <hr>
         <div id="comments" style="margin-bottom: 30px;">
-            <% comments.forEach(comment => { %>
-                <div id='card'>
-                    <div id='card-body' id="post">    
-                        <div>
-                            <div class="mb-4">
-                                <a href="/articles/<%= article.slug%>/del/<%= comment._id %>" class="btn" id="commentDelete" style="float:right; height:35px; margin-right: 15px;">D</a>
-                                <a href="/articles/<%= article.slug%>/<%= comment._id %>" class="btn" style="float:right; height:35px" id='commentEdit'>E</a>
+            <form action="/<%= article.slug %>/edit/comment">
+                <% comments.forEach(comment => { %>
+                    <div id='card'>
+                        <div id='card-body' id="post">    
+                            <div>
+                                <div class="mb-4">
+                                    <a href="/articles/<%= article.slug%>/del/<%= comment._id %>" class="btn" id="commentDelete" style="float:right; height:35px; margin-right: 15px;">D</a>
+                                    <a href="/articles/<%= article.slug%>/<%= comment._id %>" class="btn" style="float:right; height:35px" id='commentEdit'>E</a>
+                                </div>
+                                <h4 style="font-size: 22px; margin-left: 20px;">RE: <%= comment.parentTitle %></h4>
+                                <div style=" margin-top: 10px; margin-bottom: 19px; margin-left: 20px;">
+                                    <%= comment.post %> 
+                                </div>
+                                <div class="date-text" style="float: right; margin-top: 10px; margin-right: 20px;">
+                                    <%= comment.createdAt.toLocaleDateString() %> by <strong><%= comment.writer %></strong>
+                                </div>
                             </div>
-                            <h4 style="font-size: 22px; margin-left: 20px;">RE: <%= comment.parentTitle %></h4> 
-                            <div style=" margin-top: 10px; margin-bottom: 19px; margin-left: 20px;">
-                                <%= comment.post %> 
-                            </div>
-                            <div class="date-text" style="float: right; margin-top: 10px; margin-right: 20px;">
-                                <%= comment.createdAt.toLocaleDateString() %> by <strong><%= comment.writer %></strong>
-                            </div>
+                            <br><br>
+                            <br>
                         </div>
-                        <br><br>
-                        <br>
                     </div>
-                </div>
-            <% }) %> 
+                <% }) %> 
+            </form>
         </div>
     </div>
-    <div class="container" id="writeButton">
-            <button type="submit" class="btn" onclick="hideButton()">Write</button>
-    </div>
-    <div >
+    <div>
         <div class="container" id="newComment">
-            <form action="/articles/<%= article.slug %>/comment" method="POST">
-                <%- include("../comments/_comments_fields") %> 
+            <form action="/articles/<%= article.slug %>/<%= this_comment.id %>?_method=PUT" method="POST">
+                <%- include("_edit_comment_fields") %> 
             </form>
         </div>
     </div>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script>
-        const writeButton = document.getElementById("writeButton");
-        const newComment = document.getElementById("newComment");
-
-        newComment.hidden = true;
-        
-        function hideButton(){
-            if (!'<%= session %>'){
-                alert("Login before you write.");
-                location.href = '/articles/<%= article.slug %>';
-            } else {
-                writeButton.hidden = true;
-                newComment.hidden = false;
-            }
-        };
-
         const accountBtn = document.getElementById("account-btn");
         accountBtn.hidden = true;
 
@@ -93,7 +76,7 @@
             location.href='/login'
         };
 
-        if ('<%= session %>'){
+        if ('<%= session %>'){  // 로그인 된 상태: account 버튼 보이기
             accountBtn.hidden = false;
             loginBtn.hidden = true;
         };
