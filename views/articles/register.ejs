@@ -18,7 +18,7 @@
         </div>
         <div id="div-signup">
             <div id="div-border">
-                <form id="submitForm" action="/register" method="post">
+                <form id="submitForm" action="/register" method="post" onsubmit="return validatePassword()">
                     <div style="margin-bottom: 20px; margin-top: 40px;">
                         <label for="username" style="margin-right: 42%;"> Enter your Username</label><br>
                         <input type="text" pattern= ".{2,}"
@@ -59,19 +59,16 @@
     </div>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script>
-        // const password = document.getElementById("password)sign")
-        // const confirm_password = document.getElementById("password_cnf");
+        const password = document.getElementById("password)sign")
+        const confirm_password = document.getElementById("password_cnf");
 
-        // function validatePassword(){
-        // if(password.value != confirm_password.value) {
-        //     confirm_password.setCustomValidity("Passwords Don't Match");
-        // } else {
-        //     confirm_password.setCustomValidity('');
-        // }
-        // }
-
-        // password.onchange = validatePassword;
-        // confirm_password.onkeyup = validatePassword;
+        function validatePassword(){
+            if(password.value != confirm_password.value) {
+                confirm_password.setCustomValidity("Passwords Don't Match");
+            } else {
+                confirm_password.setCustomValidity('');
+            }
+        }
 
         const accountBtn = document.getElementById("account-btn");
         accountBtn.hidden = true;

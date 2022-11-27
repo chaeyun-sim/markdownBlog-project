@@ -13,29 +13,27 @@
     <%- include("_navbar") %> 
 
     <div style="margin-left: 60px; margin-right: 60px;">
-        <h1 style=" margin-bottom: 40px; margin-top: 40px; font-size: 250%;">Blog Articles</h1>
+        <h1 style="margin-top: 40px; font-size: 250%;">Blog Articles</h1>
 
-        <input type="button" id="new_article" class="no-text-decoration" onclick="whenNewArticle()" value="New Article">
+        <span style="font-size: 22px; margin-left: 5px;">All <%= Object.keys(articles).length %> posts</span>
+
+        <br>
+
+        <input type="button" id="newArticle" class="no-text-decoration newArticle" onclick="whenNewArticle()" style="margin-top: 30px; background-color: rgb(47, 160, 47);margin-left: 3px; padding: 10px; border-radius: 7px; border: none; cursor: pointer; color: white; font-weight: 400;
+        font-size: 17px;" value="New Article">
 
         <div id="articles" style="margin-bottom:50px;">
             <% articles.forEach(article => { %>
                 <div id="container">
                     <div id="card-body" class="">
-                        
-                        <div id="buttons" style="float:right">
-                            <form action="/articles/<%= article.id %>?_method=DELETE" method="POST" style="float:right">
-                                <button type="submit" id="delBtn" >Delete</button>
-                            </form>
 
-                            <a href="articles/edit/<%= article.id %>" id="editBtn" class="no-text-decoration">Edit</a>
-                        </div>
-
-                        <a href="articles/<%= article.slug %>" class="no-text-decoration" id="article-title"><h2 style="margin-left: 15px;"><%= article.title %></h1></a>
+                        <a href="articles/<%= article.slug %>" class="no-text-decoration" id="article-title"><h3 style="margin-left: 15px; font-size: 21px;"><%= article.title %></h3></a>
                         <div id="desc">
                             <%= article.description %> 
                         </div>
                         <div id="date">
-                            By <strong><%= article.writer %></strong> on <%= article.createdAt.toLocaleDateString() %>
+                            <%= article.createdAt.toLocaleDateString() %>
+                            <%= article.indexNum %>
                         </div>
                     </div>
                 </div>
@@ -50,6 +48,13 @@
                 location.href = `/article/search?value=${search.value}`
             }
         };
+
+        const newArticle = document.getElementById('newArticle');
+        if (!'<%= session.username %>') {
+            newArticle.hidden = true;
+        } else {
+            newArticle.hidden = false;
+        }
 
         function whenNewArticle(){
             if(!'<%= session.username %>'){

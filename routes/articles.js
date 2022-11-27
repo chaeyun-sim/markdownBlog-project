@@ -7,18 +7,18 @@ const router = express.Router();
 const randomid = require('randomid');
 const session = require('express-session');
 const jsdom = require('jsdom');
-// const { updateOne } = require('./../models/article');
 
 // 새 아티클 저장 페이지
 router.get('/new', async (req, res) => {
     const user = await User.findOne({ username: req.session.username });
-    let session = '';
+    console.log(user)
+    let sessions = '';
     let userId = '';
     if(user) {
-        session = req.session;
+        sessions = req.session.username;
         userId = user._id.toString();
     };
-    res.render('articles/new', { article: new Article(), session: session, userid : userId })
+    res.render('articles/new', { article: new Article(), session: sessions, userid : userId })
 });
 
 // 아티클의 수정페이지
@@ -46,8 +46,20 @@ router.put('/:id', async (req, res, next) => {
 }, saveArticleAndRedirect('edit'));
 
 router.delete('/:id', async (req, res) => {
-    await Article.findByIdAndDelete(req.params.id);
-    res.redirect('/');
+    const article = await Article.findById( req.params.id );
+    const comments = await Comments.find({ parentTitle: article.title})
+    try {
+        article.isDeleted = true;
+        article.save();
+        comments.forEach(comment => {
+            comment.isDeleted = true;
+            comment.save();
+            console.log("deleted!");
+        });
+        res.status(301).redirect('/');
+    } catch (err){
+        console.log(`catched error when deleting article : ${err}`)
+    }
 });
 
 // 아티클 페이지
@@ -55,6 +67,14 @@ router.get('/:slug', async (req, res) => {
     const article = await Article.findOne({ slug: req.params.slug });
     const comments = await Comments.find({ parentTitle: article.title, isDeleted : false }).sort({ createdAt: 'asc' }); 
     const user = await User.findOne({ username: req.session.username });
+    let previous = await Article.findOne({ indexNum: article.indexNum - 1 });
+    let next = await Article.findOne({ indexNum: article.indexNum + 1})
+    if(!previous) {
+        previous = '';
+    }
+    if(!next){
+        next = '';
+    }
     let session = '';
     let userId = '';
     if(user) {
@@ -62,7 +82,7 @@ router.get('/:slug', async (req, res) => {
         userId = user._id.toString();
     }
     if (article == null) res.redirect('/');
-    res.render('articles/show', { article: article, comments: comments, length: Object.keys(comments).length, user : req.session.username, comment: new Comments(), session: session, userid : userId });
+    res.render('articles/show', { article: article, comments: comments, length: Object.keys(comments).length, user : req.session.username, comment: new Comments(), session: session, userid : userId, previous: previous, next: next });
 });
 
 // 댓글 추가
@@ -97,7 +117,15 @@ router.get('/:slug/:id', async (req, res) => {
         session = req.session;
         userId = user._id.toString();
     }
-    res.render('comments/edit_comments', { article: article, comments: comments, this_comment: comment, length: Object.keys(comments).length, session: session, userid : userId })
+    let previous = await Article.findOne({ indexNum: article.indexNum - 1 });
+    let next = await Article.findOne({ indexNum: article.indexNum + 1})
+    if(!previous) {
+        previous = '';
+    }
+    if(!next){
+        next = '';
+    }
+    res.render('comments/edit_comments', { article: article, comments: comments, this_comment: comment, length: Object.keys(comments).length, session: session, userid : userId, previous: previous, next: next  })
 });
 
 // 댓글 수정
@@ -131,6 +159,8 @@ router.get('/:slug/del/:id', async (req, res) => {
 
 function saveArticleAndRedirect(path) {
     return async (req, res) => {
+        const articles = await Article.find().sort({ createdAt: 'desc' });
+        const totalAricles = Object.keys(articles).length;
         let article = req.article;
         article.title = req.body.title;
         article.description = req.body.description;
@@ -138,6 +168,7 @@ function saveArticleAndRedirect(path) {
         article.writer = req.session.username;
         article.isDeleted = false;
         article.isUpdated = false;
+        article.indexNum = totalAricles + 1;
         try {
             await article.save();
             res.redirect('/articles/'+ article.slug);

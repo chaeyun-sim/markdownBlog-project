@@ -12,61 +12,74 @@
 <body>
     <%- include("../articles/_navbar") %> 
     <div class="container" style=" margin-bottom: 20px;">
-        <h1 style="font-size: 250%;"><%= article.title %></h1>
+        <span><%= article.group %> </span>
+        <h1 style="font-size: 240%;"><%= article.title %></h1>
         <div class="date-text">
-            <%= article.createdAt.toLocaleDateString() %>
+            <span>by </span>
+            <span style="color: black"><%= article.writer %>,</span>
+            <span><%= article.createdAt.toLocaleDateString() %></span>
+            <hr style="margin-top: 10px;">
         </div>
-        <div>
+        <div style="margin-bottom: 40px;">
             <%- article.sanitizedHtml %> 
         </div>
-        <div style="margin-top: 40px;">
-            <a href="/" class="btn" id="article-btn">All Articles</a>
-            <a href="/articles/edit/<%= article.id %>" class="btn" id="editBtn">Edit</a>
-            <div style="float: left;">
+        <div>
+            <div>
                 <form action="/articles/<%= article.id %>?_method=DELETE" method="POST">
+                    <a href="/" class="btn" id="article-btn">All Articles</a>
+                    <a href="/articles/edit/<%= article.id %>" class="btn" id="editBtn">Edit</a>
                     <button type="submit" class="btn" id="delBtn">Delete</button>
                 </form>
             </div>
         </div><br>
     </div>
+    <div>
+        <div class="card-div">
+            <div class="card-post prev" id="prevCard" onclick="whenPrevClicked()">
+                <p class="margin" style="margin-bottom: 5px;">이전 글</p>
+                <p class="post-title"><%= previous.title %></p>
+            </div>
+            <div class="card-post next" id="nextCard" onclick="whenNextClicked()">
+                <p class="margin" style="margin-bottom: 5px;">다음 글</p>
+                <p class="post-title"><%= next.title %></p>
+            </div>
+        </div>
+    </div>
     <div style="margin-left: 60px; margin-right: 60px; margin-top: 20px;">
         <h3 id="comment-name"><%= length %> Comments</h3>
         <hr>
         <div id="comments" style="margin-bottom: 30px;">
-            <form action="/<%= article.slug %>/edit/comment">
-                <% comments.forEach(comment => { %>
-                    <div id='card'>
-                        <div id='card-body' id="post">    
-                            <div>
-                                <div class="mb-4">
-                                    <a href="/articles/<%= article.slug%>/del/<%= comment._id %>" class="btn" id="commentDelete" style="float:right; height:35px; margin-right: 15px;">D</a>
-                                    <a href="/articles/<%= article.slug%>/<%= comment._id %>" class="btn" style="float:right; height:35px" id='commentEdit'>E</a>
-                                </div>
-                                <h4 style="font-size: 22px; margin-left: 20px;">RE: <%= comment.parentTitle %></h4>
-                                <div style=" margin-top: 10px; margin-bottom: 19px; margin-left: 20px;">
-                                    <%= comment.post %> 
-                                </div>
-                                <div class="date-text" style="float: right; margin-top: 10px; margin-right: 20px;">
-                                    <%= comment.createdAt.toLocaleDateString() %> by <strong><%= comment.writer %></strong>
-                                </div>
+            <% comments.forEach(comment => { %>
+                <div id='card'>
+                    <div id='card-body' id="post">    
+                        <div>
+                            <div class="del-div">
+                                <a href="/articles/<%= article.slug%>/<%= comment._id %>" class="btn" id='commentEdit' hidden>E</a>
+                                <a href="/articles/<%= article.slug%>/del/<%= comment._id %>" class="btn" id="commentDelete">D</a>
                             </div>
-                            <br><br>
-                            <br>
+                            <h4 style="font-size: 22px; margin-left: 20px;">RE: <%= comment.parentTitle %></h4>
+                            <span id="updated"></span> 
+                            <div style=" margin-top: 10px; margin-bottom: 19px; margin-left: 20px;">
+                                <%= comment.post %> 
+                            </div>
+                            <div class="date-text" style="margin-left: 20px;">
+                                <%= comment.createdAt.toLocaleDateString() %> by <strong><%= comment.writer %></strong>
+                            </div>
                         </div>
                     </div>
-                <% }) %> 
-            </form>
+                </div>
+            <% }) %> 
         </div>
     </div>
-    <div>
-        <div class="container" id="newComment">
-            <form action="/articles/<%= article.slug %>/<%= this_comment.id %>?_method=PUT" method="POST">
-                <%- include("_edit_comment_fields") %> 
-            </form>
-        </div>
+    <div class="container" id="newComment" style="margin-bottom: 70px;">
+        <form action="/articles/<%= article.slug %>/<%= this_comment.id %>?_method=PUT" method="POST">
+            <%- include("_edit_comment_fields") %> 
+        </form>
     </div>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script>
+        // 로그인/로그아웃 버튼 체인지 부분
         const accountBtn = document.getElementById("account-btn");
         accountBtn.hidden = true;
 
@@ -76,7 +89,7 @@
             location.href='/login'
         };
 
-        if ('<%= session %>'){  // 로그인 된 상태: account 버튼 보이기
+        if ('<%= session %>'){
             accountBtn.hidden = false;
             loginBtn.hidden = true;
         };
@@ -85,6 +98,8 @@
             window.location.href = '/profile/<%= userid %>'
         };
 
+        // 검색 버튼 눌렀을 시 이동 경로 설정
+
         const search = document.getElementById("search")
         function whenClicked(){
             if(search.value != null){
@@ -92,9 +107,30 @@
             }
         };
 
+        // nav-bar 검색 드롭다운
+
         function myFunction() {
             document.getElementById("myDropdown").classList.toggle("show");
         };
+
+        // 이전/다음 글 이동 부분
+
+        if(!"<%= previous.slug %>"){
+            document.getElementById('prevCard').style.visibility = 'hidden';
+        }
+
+        function whenPrevClicked(){
+            window.location.href = '/articles/<%= previous.slug %>'
+        }
+
+        if(!"<%= next.slug %>"){
+            console.log('<%= next.slug %>')
+            document.getElementById('nextCard').hidden = true;
+        };
+
+        function whenNextClicked() {
+            window.location.href = '/articles/<%= next.slug %>'
+        }
     </script>
 </body>
 </html>

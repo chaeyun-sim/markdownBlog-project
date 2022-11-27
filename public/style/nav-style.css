@@ -11,7 +11,7 @@
 }
 
 .nav-text {
-    text-decoration: none; color: #2192FF; font-weight: 550"
+    text-decoration: none; color: #2071be; font-weight: 600"
 }
 
 #nav {
@@ -57,7 +57,19 @@
 #search {
     width: 300px;
     height: 35px;  
-    margin-top: 10px; border-style: solid; border-radius: 5px; border-width: 1px; border-color: rgb(205, 203, 203); font-size: 17px;
+    margin-top: 10px;
+    border-style: solid;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-width: 1px;
+    /* border-color: rgb(205, 203, 203); */
+    font-size: 17px;
+}
+
+#search:hover {
+    border-width: 2px;
+    border-color: black;
 }
 
 #searchIcon {

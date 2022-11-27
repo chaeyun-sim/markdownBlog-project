@@ -1,11 +1,14 @@
-<div style="border-style: solid; border-width: 1px; border-color: rgb(230, 230, 230); border-radius: 5px; text-align: left;">
-    <p style="margin-right: 30px; float: right; margin-top: 20px;">
+<div id="editComment-div">
+    <p id="writer">
         <label for="writer" style="font-weight: 500">작성자: <strong><%= this_comment.writer %></strong></label>
     </p>
     <h4 style="margin-left: 20px; font-size: 22px;">RE: <%= this_comment.parentTitle %> (updating) </h4>
     <div>
-        <textarea required name="post" id="post_text" style="font-family: 'Helvetica', 'Arial', sans-serif;font-size: 16px;" placeholder=""><%= this_comment.post %></textarea>
-        <button type="submit" class="btn" style="margin-bottom: 20px;">Update</button>
-        <a href="/articles/<%= article.slug %>" style="margin-bottom: 20px; margin-right: 40px;" class="btn">Cancel</a>
+        <textarea required name="post" id="updated_post_text" placeholder="댓글을 작성하시오."
+            style="margin-bottom: 25px;"><%= this_comment.post %></textarea>
+        <div style="float: right; margin-top: 60px;">
+            <input type="submit" class="updated-btn" value="Save">
+            <a href="/articles/<%= article.slug %>" class="cancel-btn">Cancel</a>
+        </div>
     </div>
 </div>

@@ -2,16 +2,16 @@
 
 <div>
     <label for="title" style="font-size: 20px;">Title</label><br>
-    <input required value="<%= article.title %>" type="text" name="title" id="title" class="form-shape">
+    <input required value="<%= article.title %>" type="text" name="title" id="title" class="form-shape well-font">
 </div>
 <div style="margin-top: 30px;">
     <label for="description" style="font-size: 20px;">Description</label><br>
-    <textarea name="description" id="description" class="form-textarea"><%= article.description %></textarea>
+    <textarea name="description" id="description" class="form-textarea well-font"><%= article.description %></textarea>
 </div>
 <div style="margin-top: 30px;">
     <label for="markdown" style="font-size: 20px;">Markdown</label><br>
-    <textarea required name="markdown" id="markdown" class="form-textarea"><%= article.markdown %></textarea>
+    <textarea required name="markdown" id="markdown" class="form-textarea well-font"><%= article.markdown %></textarea>
 </div>
 
 <button type="submit" id="save-btn">Save</button>
-<a href="/"><button id="back-btn">Cancel</button></a>
+<a href="/" id="back-btn">Cancel</a>

@@ -1,11 +1,9 @@
-<div style="border-style: solid; border-width: 1px; border-color: rgb(230, 230, 230); border-radius: 5px; text-align: left;">
-    <p style="margin-right: 30px; float: right">
-        <label for="writer" style="font-weight: 500">작성자: <strong><%= session.username %></strong></label>
-    </p>
+<div id="editComment-div">
     <h4 style="margin-left: 20px; font-size: 22px;">RE: <%= article.title %></h4>
-    <textarea required name="post" id="post_text" placeholder="댓글을 작성하시오." style="margin-bottom: 20px;"><%= comment.post %></textarea>
-    <div style="float:right; margin-top: 80px">
-        <input type="submit" class="btn" style="margin-bottom: 20px;" value="Save">
-        <a href="/articles/<%= article.slug %>" style="margin-bottom: 20px; margin-right: 40px;" class="btn">Cancel</a>
+    <div>
+        <textarea required name="post" id="post_text" placeholder="댓글을 작성하시오." style="margin-bottom: 30px;"><%= comment.post %></textarea>
+        <div id="save-div" style="margin-bottom: 50px;">
+            <input type="submit" id="save-btn" class="save-btn" value="Save">
+        </div>
     </div>
 </div>

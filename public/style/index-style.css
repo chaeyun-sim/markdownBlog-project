@@ -1,4 +1,4 @@
-h2:hover {
+#article-title:hover {
     color: black;
     text-decoration: underline;
 }
@@ -7,7 +7,7 @@ h2:hover {
     text-decoration: none
 };
 
-#new_article {
+.newArticle {
     background-color: rgb(47, 160, 47);
     margin-left: 3px;
     margin-bottom: 10px;
@@ -49,9 +49,9 @@ h2:hover {
 }
 
 #desc {
-    margin-bottom: 19px; margin-left: 15px;
+    margin-bottom: 10px; margin-left: 15px;
 }
 
 #date {
-    margin-bottom: 7px; color: gray; margin-left: 15px; margin-bottom: 15px;
+    margin-bottom: 7px; color: rgb(179, 179, 179); margin-left: 15px; margin-bottom: 15px;
 }

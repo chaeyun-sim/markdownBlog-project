@@ -77,7 +77,6 @@ router.post('/login', async (req, res) => {
             })
         }
     } else {
-        res.write("<script>alert('Please check your username and password again.');location.href='/login';</script>");
         res.render('articles/no_user');
     }
 });

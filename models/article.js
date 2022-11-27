@@ -25,6 +25,14 @@ const articleSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    group : {
+        type: String,
+        required: false,
+    },
+    indexNum : {
+        type: Number,
+        required: true,
+    },
     isDeleted: {
         type: Boolean,
         required: true,
