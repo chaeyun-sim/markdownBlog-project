@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,12 +10,24 @@
     <link rel="stylesheet" type="text/css" href="/style/nav-style.css">
     <title>Blog</title>
 </head>
-<body>
-    <%- include("_navbar") %> 
 
-    <div class="container" style=" margin-bottom: 20px;">
+<body>
+    <%- include("_navbar") %>
+
+    <div class="container" style="margin-bottom: 0px;">
         <span><%= article.group %> </span>
-        <h1 style="font-size: 240%;"><%= article.title %></h1>
+        <h1 style="font-size: 240%; margin-bottom: 10px;"><%= article.title %></h1>
+        <div style="float: right; margin-top: 29px;">
+            <div>
+                <form action="/articles/<%= article.id %>?_method=DELETE" method="POST">
+                    <a href="/articles/edit/<%= article.id %>" class="btn" id="editBtn">Edit</a>
+                    <button type="submit" class="btn" id="delBtn">Delete</button>
+                </form>
+            </div>
+        </div>
+        <div id="desc" style=" margin-bottom: 20px;">
+            <%= article.description %>
+        </div>
         <div class="date-text">
             <span>by </span>
             <span style="color: black"><%= article.writer %>,</span>
@@ -22,17 +35,8 @@
             <hr style="margin-top: 10px;">
         </div>
         <div style="margin-bottom: 0px;">
-            <%- article.sanitizedHtml %> 
+            <%- article.sanitizedHtml %>
         </div>
-        <div>
-            <div>
-                <form action="/articles/<%= article.id %>?_method=DELETE" method="POST">
-                    <!-- <a href="/" class="btn" id="article-btn">All Articles</a> -->
-                    <a href="/articles/edit/<%= article.id %>" class="btn" id="editBtn">Edit</a>
-                    <button type="submit" class="btn" id="delBtn">Delete</button>
-                </form>
-            </div>
-        </div><br>
     </div>
     <div>
         <div class="card-div">
@@ -51,42 +55,43 @@
         <hr>
         <div id="comments" style="margin-bottom: 30px;">
             <% comments.forEach(comment => { %>
-                <div id='card'>
-                    <div id='card-body' id="post">    
-                        <div>
-                            <div class="btn-div">
-                                <a href="/articles/<%= article.slug%>/<%= comment._id %>" class="btn" id='commentEdit' class="edit">E</a>
-                                <a href="/articles/<%= article.slug%>/del/<%= comment._id %>" class="btn" id="commentDelete">D</a>
-                            </div>
-                            <h4 style="font-size: 22px; margin-left: 20px;">RE: <%= comment.parentTitle %></h4> 
-                            <div style=" margin-top: 10px; margin-bottom: 19px; margin-left: 20px;">
-                                <%= comment.post %> 
-                            </div>
-                            <div class="date-text" style="margin-left: 20px;">
-                                <%= comment.createdAt.toLocaleDateString() %> by <strong><%= comment.writer %></strong>
-                            </div>
+            <div id='card'>
+                <div id='card-body' id="post">
+                    <div>
+                        <div class="btn-div">
+                            <a href="/articles/<%= article.slug%>/<%= comment._id %>" class="btn" id='commentEdit'
+                                class="edit">E</a>
+                            <a href="/articles/<%= article.slug%>/del/<%= comment._id %>" class="btn"
+                                id="commentDelete">D</a>
+                        </div>
+                        <h4 style="font-size: 22px; margin-left: 20px;">RE: <%= comment.parentTitle %></h4>
+                        <div style=" margin-top: 10px; margin-bottom: 19px; margin-left: 20px;">
+                            <%= comment.post %>
+                        </div>
+                        <div class="date-text" style="margin-left: 20px;">
+                            <%= comment.createdAt.toLocaleDateString('ko-KR', { timeZone: 'UTC'}) %> by
+                            <strong><%= comment.writer %></strong>
                         </div>
                     </div>
                 </div>
-            <% }) %> 
+            </div>
+            <% }) %>
         </div>
     </div>
-    <!-- <div class="container" id="writeButton">
-            <button type="submit" class="btn" onclick="hideButton()">Write</button>
-    </div> -->
-    <div >
+    <div>
         <div class="container" id="newComment" onsubmit="return validateForm()">
             <form action="/articles/<%= article.slug %>/comment" method="POST">
-                <%- include("../comments/_comments_fields") %> 
+                <%- include("../comments/_comments_fields") %>
             </form>
         </div>
     </div>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script>
+        // 로그인 하지 않았을 시 댓글 작성 막기
         const saveBtn = document.getElementById('save-btn')
         const textarea = document.getElementById('post_text')
 
-        if(!'<%= session %>'){
+        if (!'<%= session %>') {
             textarea.placeholder = 'Sign in to comment'
             textarea.style.cursor = 'not-allowed'
             textarea.style.backgroundColor = '#EEEEEE'
@@ -96,7 +101,7 @@
 
         // form 작성 시 확인 부분
 
-        function validateForm(){
+        function validateForm() {
             if (!'<%= session %>') {
                 alert('Sign in before comment, please.')
             }
@@ -113,26 +118,27 @@
         editBtn.hidden = true;
         delBtn.hidden = true;
 
-        function toLogin(){
-            location.href='/login'
+        function toLogin() {
+            location.href = '/login'
         };
 
-        if ('<%= session %>'){
+        if ('<%= session %>') {
             accountBtn.hidden = false;
             loginBtn.hidden = true;
             editBtn.hidden = false;
             delBtn.hidden = false;
         };
 
-        function toAccount(){
+        function toAccount() {
             window.location.href = '/profile/<%= userid %>'
         };
 
         // 검색 버튼 눌렀을 시 이동 경로 설정
 
         const search = document.getElementById("search")
-        function whenClicked(){
-            if(search.value != null){
+
+        function whenClicked() {
+            if (search.value != null) {
                 location.href = `/article/search?value=${search.value}`
             }
         };
@@ -145,15 +151,15 @@
 
         // 이전/다음 글 이동 부분
 
-        if(!"<%= previous.slug %>"){
+        if (!"<%= previous.slug %>") {
             document.getElementById('prevCard').style.visibility = 'hidden';
         }
 
-        function whenPrevClicked(){
+        function whenPrevClicked() {
             window.location.href = '/articles/<%= previous.slug %>'
         }
 
-        if(!"<%= next.slug %>"){
+        if (!"<%= next.slug %>") {
             console.log('<%= next.slug %>')
             document.getElementById('nextCard').hidden = true;
         };
@@ -163,4 +169,5 @@
         }
     </script>
 </body>
+
 </html>

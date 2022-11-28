@@ -7,6 +7,7 @@ const router = express.Router();
 const randomid = require('randomid');
 const session = require('express-session');
 const jsdom = require('jsdom');
+const comment = require('./../models/comment');
 
 // 새 아티클 저장 페이지
 router.get('/new', async (req, res) => {
@@ -34,17 +35,19 @@ router.get('/edit/:id', async (req, res) => {
     res.render('articles/edit', { article: article, session: session, userid : userId })
 });
 
-// 메인 페이지
+// 새 아티클 추가
 router.post('/', async (req, res, next) => {
     req.article = new Article();
     next();
 }, saveArticleAndRedirect('new'));
 
+// 아티클 수정
 router.put('/:id', async (req, res, next) => {
     req.article = await Article.findById(req.params.id);
     next();
 }, saveArticleAndRedirect('edit'));
 
+// 아티클과 댓글 삭제
 router.delete('/:id', async (req, res) => {
     const article = await Article.findById( req.params.id );
     const comments = await Comments.find({ parentTitle: article.title})
@@ -69,14 +72,14 @@ router.get('/:slug', async (req, res) => {
     const user = await User.findOne({ username: req.session.username });
     let previous = await Article.findOne({ indexNum: article.indexNum - 1 });
     let next = await Article.findOne({ indexNum: article.indexNum + 1})
+    let session = '';
+    let userId = '';
     if(!previous) {
         previous = '';
     }
     if(!next){
         next = '';
     }
-    let session = '';
-    let userId = '';
     if(user) {
         session = req.session;
         userId = user._id.toString();
@@ -141,7 +144,7 @@ router.put('/:slug/:id', async (req, res) => {
     res.status(301).redirect(`/articles/${article.slug}`);
 })
 
-// 댓글 삭제
+// 댓글 직접 삭제
 router.get('/:slug/del/:id', async (req, res) => {
     const article = await Article.findOne({ slug: req.params.slug });
     const comments = await Comments.find({ _id: req.params.id });

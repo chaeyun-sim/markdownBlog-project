@@ -10,6 +10,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const jsdom = require('jsdom');
 const user = require('./models/user');
+const article = require('./models/article');
 const FileStore = require('session-file-store')(session);
 
 const app = express();
@@ -45,7 +46,7 @@ app.get('/', async (req, res) => {
         userId = user._id.toString();
     };
     // console.log(articles)
-    res.render('articles/index', { articles: articles, user : req.session.username, session : req.session, userid: userId });
+    res.render('articles/index', { articles: articles, user : req.session.username, session : req.session, userid: userId});
 });
 
 // 로그아웃 시 세션 삭제

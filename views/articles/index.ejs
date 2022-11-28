@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,8 +10,9 @@
     <link rel="stylesheet" type="text/css" href="/style/nav-style.css">
     <title>Blog</title>
 </head>
+
 <body>
-    <%- include("_navbar") %> 
+    <%- include("_navbar") %>
 
     <div style="margin-left: 60px; margin-right: 60px;">
         <h1 style="margin-top: 40px; font-size: 250%;">Blog Articles</h1>
@@ -24,27 +26,34 @@
 
         <div id="articles" style="margin-bottom:50px;">
             <% articles.forEach(article => { %>
-                <div id="container">
-                    <div id="card-body" class="">
+            <div id="container">
+                <div id="card-body" class="">
 
-                        <a href="articles/<%= article.slug %>" class="no-text-decoration" id="article-title"><h3 style="margin-left: 15px; font-size: 21px;"><%= article.title %></h3></a>
-                        <div id="desc">
+                    <a href="articles/<%= article.slug %>" class="no-text-decoration" id="article-title">
+                        <h3 style="margin-left: 15px; font-size: 21px;"><%= article.title %></h3>
+                    </a>
+                    <!-- <div id="desc">
                             <%= article.description %> 
-                        </div>
-                        <div id="date">
-                            <%= article.createdAt.toLocaleDateString() %>
-                            <%= article.indexNum %>
+                        </div> -->
+                    <div id="desc">
+                        <div style="padding-right: 1%;">
+                            <%= article.markdown.slice(0, 203)%> ...
                         </div>
                     </div>
+                    <div id="date">
+                        <%= article.createdAt.toLocaleDateString() %>
+                    </div>
                 </div>
-            <% }) %> 
+            </div>
+            <% }) %>
         </div>
     </div>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script>
         const search = document.getElementById("search")
-        function whenClicked(){
-            if(search.value != null){
+
+        function whenClicked() {
+            if (search.value != null) {
                 location.href = `/article/search?value=${search.value}`
             }
         };
@@ -56,12 +65,12 @@
             newArticle.hidden = false;
         }
 
-        function whenNewArticle(){
-            if(!'<%= session.username %>'){
+        function whenNewArticle() {
+            if (!'<%= session.username %>') {
                 alert("Login before you write.");
                 location.href = '/';
             } else {
-                location.href = 'articles/new'   
+                location.href = 'articles/new'
             }
         };
 
@@ -73,11 +82,11 @@
         // editBtn.hidden = true;
         // delBtn.hidden = true;
 
-        function toLogin(){
-            location.href='/login'
+        function toLogin() {
+            location.href = '/login'
         };
 
-        if ('<%= session.username %>'){
+        if ('<%= session.username %>') {
             accountBtn.hidden = false;
             loginBtn.hidden = true;
 
@@ -85,7 +94,7 @@
             delBtn.hidden = false;
         };
 
-        function toAccount(){
+        function toAccount() {
             window.location.href = '/profile/<%= userid %>'
         }
 
@@ -94,4 +103,5 @@
         }
     </script>
 </body>
+
 </html>

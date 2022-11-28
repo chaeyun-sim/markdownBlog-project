@@ -28,8 +28,18 @@ const commentSchema = mongoose.Schema({
         required: true,
         default: false,
     },
+    isUpdated : {
+        type: Boolean,
+        required: true,
+        default: false,
+    },
     slug: {
         type: String,
+        unique: false,
+    },
+    updatedAt: {
+        type:Date,
+        default:Date.now,
         unique: false,
     },
     // updatedAt:{

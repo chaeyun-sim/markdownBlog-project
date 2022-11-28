@@ -22,7 +22,7 @@ textarea {
 
 #delBtn {
     border-radius: 10px;
-    padding: 9px 10px ;
+    padding: 8.5px 10px ;
     background-color: red;
     color: white;
     cursor: pointer;
@@ -48,6 +48,11 @@ hr {
     color: #EEEEEE;
 }
 
+#desc {
+    font-size: 20px;
+    font-weight:520;
+}
+
 #card {
     margin-top: 28px; border-style: solid; border-width: 1px; border-color: rgb(230, 230, 230); border-radius: 5px; text-align: left;
 }
@@ -66,7 +71,7 @@ hr {
 
 .btn-div {
     float: right;
-    width: 13%;
+    width: 15%;
 }
 
 .del-div {
@@ -196,4 +201,22 @@ hr {
 .post-title {
     margin-left: 20px; margin-top: 10px;
     font-size: 16px; font-weight: bold;
+}
+
+.drop {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdownDate {
+    margin-top: 6px;
+    background-color: #fff;
+    display: none;
+    position: absolute;
+    min-width: 180px;
+    z-index: 1;
+}
+
+.drop:hover .dropdownDate {
+    display: block;
 }
