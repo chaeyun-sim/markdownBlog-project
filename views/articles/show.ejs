@@ -38,18 +38,7 @@
             <%- article.sanitizedHtml %>
         </div>
     </div>
-    <div>
-        <div class="card-div">
-            <div class="card-post prev" id="prevCard"  style="margin-top: 10px;" onclick="whenPrevClicked()">
-                <p class="margin" style="margin-bottom: 5px;">이전 글</p>
-                <p class="post-title"><%= previous.title %></p>
-            </div>
-            <div class="card-post next" id="nextCard" onclick="whenNextClicked()">
-                <p class="margin" style="margin-bottom: 5px;">다음 글</p>
-                <p class="post-title"><%= next.title %></p>
-            </div>
-        </div>
-    </div>
+
     <div style="margin-left: 60px; margin-right: 60px; margin-top: 20px;">
         <h3 id="comment-name"><%= length %> Comments</h3>
         <hr>
@@ -71,7 +60,7 @@
                         <div class="date-text" style="margin-left: 20px;">
                             <%= comment.createdAt.toLocaleDateString('ko-KR', { timeZone: 'UTC'}) %> by
                             <strong><%= comment.writer %></strong>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -86,6 +75,22 @@
             </form>
         </div>
     </div>
+    <div>
+        <div class="card-div">
+            <div class="card-post prev" id="prevCard" style="margin-top: 10px;" onclick="whenPrevClicked()">
+                <p class="margin" style="margin-bottom: 5px;">이전 글</p>
+                <p class="post-title"><%= previous.title %></p>
+            </div>
+            <div class="card-post next" id="nextCard" onclick="whenNextClicked()">
+                <p class="margin" style="margin-bottom: 5px;">다음 글</p>
+                <p class="post-title"><%= next.title %></p>
+            </div>
+        </div>
+    </div>
+        <div style="margin-top: 190px;">
+            <%- include("_copywrite") %>
+        </div>
+
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script>
         // 로그인 하지 않았을 시 댓글 작성 막기

@@ -12,13 +12,16 @@
 <body>
     <%- include("_navbar") %>
 
-    <div style="margin-left: 60px; margin-right: 60px;">
+    <div style="margin : 0px 60px 285px 60px">
         <h1 style="margin-bottom: 40px; margin-top: 20px; font-size: 250%;">New Article</h1>
 
         <form action="/articles" method="POST">
             <%- include("_form_fields") %> 
         </form>
     </div>
+
+    <%- include("_copywrite") %>
+
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script>
         const accountBtn = document.getElementById("account-btn");

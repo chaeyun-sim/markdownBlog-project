@@ -22,21 +22,22 @@ textarea {
 
 #delBtn {
     border-radius: 10px;
-    padding: 8.5px 10px ;
-    background-color: red;
+    padding: 6px 10px ;
+    background-color: rgb(255, 79, 79);
     color: white;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 13px;
 }
 
 #editBtn {
     margin-top: 5px;
     border-radius: 10px;
     border-color: none;
-    padding: 8px 14px ;
+    padding: 6.7px 11px ;
     background-color: #55b57c;
     color: white; 
     cursor: pointer;
+    font-size: 13px;
 }
 
 h3 {
@@ -57,7 +58,7 @@ hr {
     margin-top: 28px; border-style: solid; border-width: 1px; border-color: rgb(230, 230, 230); border-radius: 5px; text-align: left;
 }
 
-#card-boty {
+#card-body {
     margin: 17px 0px 10px 20px;
 }
 
@@ -66,7 +67,7 @@ hr {
 }
 
 #comment-name {
-    margin-top: 130px;
+    margin-top: 60px;
 }
 
 .btn-div {
@@ -184,8 +185,21 @@ hr {
     cursor: pointer;
 }
 
+.card-div {
+    margin-top: 30px;
+}
+
 .prev {
     margin-left: 60px;
+    margin-bottom: 60px;
+}
+
+.prev:hover {
+    background-color:rgb(247, 251, 255);
+}
+
+.next:hover {
+    background-color:rgb(247, 251, 255);
 }
 
 .next {
