@@ -40,7 +40,7 @@
     </div>
     <div>
         <div class="card-div">
-            <div class="card-post prev" id="prevCard" onclick="whenPrevClicked()">
+            <div class="card-post prev" id="prevCard"  style="margin-top: 10px;" onclick="whenPrevClicked()">
                 <p class="margin" style="margin-bottom: 5px;">이전 글</p>
                 <p class="post-title"><%= previous.title %></p>
             </div>
@@ -71,6 +71,7 @@
                         <div class="date-text" style="margin-left: 20px;">
                             <%= comment.createdAt.toLocaleDateString('ko-KR', { timeZone: 'UTC'}) %> by
                             <strong><%= comment.writer %></strong>
+                            
                         </div>
                     </div>
                 </div>
