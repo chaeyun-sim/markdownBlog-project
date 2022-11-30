@@ -25,8 +25,9 @@ const articleSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    group : {
-        type: String,
+    category : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category',
         required: false,
     },
     indexNum : {

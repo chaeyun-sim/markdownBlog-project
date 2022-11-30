@@ -2,6 +2,7 @@ const express = require('express');
 const Article = require('./../models/article');
 const Comments = require('./../models/comment');
 const User = require('./../models/user')
+const Categories = require('./../models/category')
 const bodyParser = require('body-parser');
 const router = express.Router();
 const randomid = require('randomid');
@@ -12,6 +13,8 @@ const comment = require('./../models/comment');
 // 새 아티클 저장 페이지
 router.get('/new', async (req, res) => {
     const user = await User.findOne({ username: req.session.username });
+    const category = await Categories.find();
+    console.log(category)
     console.log(user)
     let sessions = '';
     let userId = '';
@@ -19,7 +22,7 @@ router.get('/new', async (req, res) => {
         sessions = req.session.username;
         userId = user._id.toString();
     };
-    res.render('articles/new', { article: new Article(), session: sessions, userid : userId })
+    res.render('articles/new', { article: new Article(), session: sessions, userid : userId, categories : category })
 });
 
 // 아티클의 수정페이지
@@ -50,7 +53,7 @@ router.put('/:id', async (req, res, next) => {
 // 아티클과 댓글 삭제
 router.delete('/:id', async (req, res) => {
     const article = await Article.findById( req.params.id );
-    const comments = await Comments.find({ parentTitle: article.title})
+    const comments = await Comments.find({ parentTitle: article.title })
     try {
         article.isDeleted = true;
         article.save();
@@ -169,6 +172,7 @@ function saveArticleAndRedirect(path) {
         article.description = req.body.description;
         article.markdown = req.body.markdown;
         article.writer = req.session.username;
+        article.category = req.body.category;
         article.isDeleted = false;
         article.isUpdated = false;
         article.indexNum = totalAricles + 1;

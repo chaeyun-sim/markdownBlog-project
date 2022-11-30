@@ -15,6 +15,16 @@
     margin-top: 10px; border-style: solid; border-radius: 5px; border-width: 1px; border-color: rgb(205, 203, 203);
 }
 
+#category {
+    margin-right: 30px; margin-top: 20px; width: 30%; height: 30px; border: 1px solid; 
+}
+
+
+#add_val {
+    margin-right: 30px; margin-top: 10px; width: 30%; height: 35px; border: 1px solid; border-color: rgb(205, 203, 203); border-radius: 5px;
+}
+
+
 #save-btn {
     border-radius: 10px; border: none; cursor: pointer;
     height: 35px;

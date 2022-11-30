@@ -1,6 +1,7 @@
 const express = require('express');
 const Article = require('./../models/article');
 const Comments = require('./../models/comment');
+const Categories = require('./../models/category')
 const User = require('./../models/user');
 const router = express.Router();
 const jsdom = require('jsdom')
@@ -54,7 +55,6 @@ router.post('/register', async (req, res) => {
         email: req.body.email,
         gender: req.body.gender,
     });
-    console.log(req.body.username);
     try {
         await user.save();
         res.redirect('/login');
@@ -72,7 +72,6 @@ router.post('/login', async (req, res) => {
             req.session.username = req.body.username;
             req.session.logined = true;
             req.session.save(() => {
-                console.log(req.session);
                 res.redirect('/profile/'+ userInfo.id);
             })
         }
@@ -100,6 +99,33 @@ router.get('/article/search', async (req, res) => {
         userId = user._id.toString();
     }
     res.render('articles/search', { articles: searchWord, session: session, userid : userId });
+});
+
+router.get('/article/add/categories', async (req, res) => {
+    const category = await Categories.find();
+    const user = await User.findOne({ username: req.session.username });
+    let session = '';
+    let userId = '';
+    if(user) {
+        session = req.session;
+        userId = user._id.toString();
+    };
+    res.render('articles/add_categories', { category : new Categories(), session: session, userid : userId })
+});
+
+
+router.post('/article/add/categories', async (req, res) => {
+    const category = new Categories({
+        name: req.body.name,
+        description: req.body.description,
+    });
+    try {
+        await category.save();
+        res.redirect('/');
+    } catch (e) {
+        console.log(`catch error when saving categories: ${e}`);
+        res.redirect('/');
+    };
 });
 
 

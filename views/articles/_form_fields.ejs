@@ -1,6 +1,18 @@
 <!-- this is a partial view not a full view -->
 
-<div>
+
+<div id="select">
+    <label for="category" id="cat-label" style="font-size: 20px;">Choose Category</label><br>
+    <select id="category">
+        <% categories.forEach(cate=>{ %>
+        <option value="<%= article.category %>">
+            <%= cate.name %>
+        </option>
+        <% }) %>
+    </select>
+    <a href="/article/add/categories">Add Categories</a>
+</div>
+<div style="margin-top: 30px">
     <label for="title" style="font-size: 20px;">Title</label><br>
     <input required value="<%= article.title %>" type="text" name="title" id="title" class="form-shape well-font">
 </div>

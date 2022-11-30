@@ -4,20 +4,32 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/style/profile-style.css">
+    <link rel="stylesheet" type="text/css" href="/style/new-style.css">
     <link rel="stylesheet" type="text/css" href="/style/common-style.css">
     <link rel="stylesheet" type="text/css" href="/style/nav-style.css">
     <title>Blog</title>
 </head>
-<body>
-    <%- include("_navbar") %> 
-    <div style="text-align: center" class="">
-        <h1 id="bigfont">PROFILE</h1>
-        <h3 id="user"> Welcome, <u><%= user %></u></h3>
-        <div >
-            <a href="/logout" id="logout_btn" class="">Logout</a>
-        </div>
-    </div>    
+<body >
+    <%- include("_navbar") %>
+
+    <div style="margin : 0px 60px 285px 60px">
+        <h1 style="margin-bottom: 40px; margin-top: 20px; font-size: 250%;">Add Categories</h1>
+
+        <form action="/article/add/categories" method="POST">
+            <div style="margin-top: 30px">
+                <label for="title" style="font-size: 20px;">Title</label><br>
+                <input required value="<%= category.name %>" type="text" name="title" id="title" class="form-shape well-font">
+            </div>
+            <div style="margin-top: 30px;">
+                <label for="description" style="font-size: 20px;">Description</label><br>
+                <textarea name="description" id="description" class="form-textarea well-font"><%= category.description %></textarea>
+            </div>
+            <button type="submit" id="save-btn">Save</button>
+            <a href="/" id="back-btn">Cancel</a>
+        </form>
+    </div>
+
+    <%- include("_copyright") %>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script>
         const accountBtn = document.getElementById("account-btn");
@@ -29,7 +41,7 @@
             location.href='/login'
         };
 
-        if ('<%= session %>'){
+        if ('<%= session.username %>'){
             accountBtn.hidden = false;
             loginBtn.hidden = true;
         };

@@ -24,6 +24,18 @@
         <input type="button" id="newArticle" class="no-text-decoration newArticle" onclick="whenNewArticle()" style="margin-top: 30px; background-color: rgb(47, 160, 47);margin-left: 3px; padding: 10px; border-radius: 7px; border: none; cursor: pointer; color: white; font-weight: 400;
         font-size: 17px;" value="New Article">
 
+        <div style="text-align: center; margin-top: 30px;">
+            <div>
+                <a href="/" class="margin-r no-text-decoration" style="color:darkslategray">All</a>
+
+                <% categories.forEach(category => { %>
+                <a href="#" class="margin-r no-text-decoration" style="color:darkslategray"><%= category.name %></a>
+                <% }) %>
+
+                <a href="/article/add/categories">+</a>
+            </div>
+        </div>
+
         <div id="articles" style="margin-bottom:50px;">
             <% articles.forEach(article => { %>
             <div id="container">
@@ -32,12 +44,13 @@
                     <a href="articles/<%= article.slug %>" class="no-text-decoration" id="article-title">
                         <h3 style="margin-left: 15px; font-size: 21px;"><%= article.title %></h3>
                     </a>
-                    <!-- <div id="desc">
-                            <%= article.description %> 
-                        </div> -->
                     <div id="desc">
                         <div style="padding-right: 1%;">
-                            <%= article.markdown.slice(0, 203)%> ...
+                            <% if (Object.keys(article.markdown).length > 100){ %>
+                                <%= article.markdown.slice(0, 200)%> ...
+                            <% } else { %>
+                                <%= article.markdown%>
+                            <% } %>
                         </div>
                     </div>
                     <div id="date">

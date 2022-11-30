@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Article = require('./models/article');
 const Comments = require('./models/comment');
 const User = require('./models/user');
+const Categories = require('./models/category')
 const articleRouter = require('./routes/articles');
 const rootRouter = require('./routes/root')
 const methodOverride = require('method-override');
@@ -25,6 +26,7 @@ const db = mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: tr
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(session({
@@ -38,6 +40,7 @@ app.use(session({
 app.get('/', async (req, res) => {
     // const articles = await Article.find().sort({ createdAt: 'desc' });
     const articles = await Article.find({ isDeleted : false }).sort({ createdAt: 'desc' });
+    const category = await Categories.find();
     const user = await User.findOne({ username: req.session.username });
     let session = '';
     let userId = '';
@@ -46,7 +49,7 @@ app.get('/', async (req, res) => {
         userId = user._id.toString();
     };
     // console.log(articles)
-    res.render('articles/index', { articles: articles, user : req.session.username, session : req.session, userid: userId});
+    res.render('articles/index', { articles: articles, user : req.session.username, session : req.session, userid: userId, categories:category });
 });
 
 // 로그아웃 시 세션 삭제
