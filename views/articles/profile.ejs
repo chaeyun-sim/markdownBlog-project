@@ -14,14 +14,19 @@
     <div style="text-align: center" class="">
         <h1 id="bigfont">PROFILE</h1>
         <h3 id="user"> Welcome, <u><%= user %></u></h3>
-        <div >
-            <a href="/logout" id="logout_btn" class="">Logout</a>
+        <div style="float: left; margin-left: 150px; width: 30%; height: 100%;">
+            <span style="padding: 5%">Here to change password</span>
         </div>
-    </div>    
+        <div style="float: right; margin-right: 150px; width: 30%">
+            <button>Change Password</button>
+        </div>
+        <br><br>
+        <span style="color: red">--- Under Construction ---</span>  
+    </div>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script>
-        const accountBtn = document.getElementById("account-btn");
-        accountBtn.hidden = true;
+        const logoutBtn = document.getElementById("logout-btn");
+        logoutBtn.hidden = true;
 
         const loginBtn = document.getElementById("login-btn")
 
@@ -29,13 +34,18 @@
             location.href='/login'
         };
 
-        if ('<%= session %>'){
-            accountBtn.hidden = false;
+        const profileNav = document.getElementById('profile-nav');
+        profileNav.hidden = true;
+        
+        if ('<%= session.username %>') {
+            logoutBtn.hidden = false;
             loginBtn.hidden = true;
+
+            profileNav.hidden = false;
         };
 
-        function toAccount(){
-            window.location.href = '/profile/<%= userid %>'
+        function toLogout() {
+            location.href = '/logout'
         };
 
         const search = document.getElementById("search")

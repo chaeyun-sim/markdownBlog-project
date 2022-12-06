@@ -60,3 +60,15 @@
 .margin-r {
     margin-right: 20px;
 }
+
+.category-color {
+    color: rgb(133, 133, 133);
+}
+
+.category:hover {
+    color: #518167
+}
+
+.category-add:hover {
+    color: #77b393;
+}

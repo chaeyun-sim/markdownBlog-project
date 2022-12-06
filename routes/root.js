@@ -72,7 +72,7 @@ router.post('/login', async (req, res) => {
             req.session.username = req.body.username;
             req.session.logined = true;
             req.session.save(() => {
-                res.redirect('/profile/'+ userInfo.id);
+                res.redirect('/');
             })
         }
     } else {
@@ -115,6 +115,8 @@ router.get('/article/add/categories', async (req, res) => {
 
 
 router.post('/article/add/categories', async (req, res) => {
+    // console.log(req.body.name)
+    // console.log(req.body.description)
     const category = new Categories({
         name: req.body.name,
         description: req.body.description,
@@ -127,6 +129,21 @@ router.post('/article/add/categories', async (req, res) => {
         res.redirect('/');
     };
 });
+
+router.get('/category/:id', async (req, res) => {
+    const categories = await Categories.find()
+    const category = await Categories.findById( req.params.id );
+    console.log(category.name)
+    const articles = await Article.find({ isDeleted : false, category: category.name }).sort({ createdAt: 'desc' });
+    const user = await User.findOne({ username: req.session.username });
+    let session = '';
+    let userId = '';
+    if(user) {
+        session = req.session;
+        userId = user._id.toString();
+    };
+    res.render('articles/index', { articles: articles, categories: categories, session: req.session, userid: userId })
+})
 
 
 module.exports = router;

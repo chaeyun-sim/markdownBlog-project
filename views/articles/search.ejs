@@ -39,22 +39,27 @@
     
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script>
-        const accountBtn = document.getElementById("account-btn");
-        accountBtn.hidden = true;
+        const logoutBtn = document.getElementById("logout-btn");
+        logoutBtn.hidden = true;
 
         const loginBtn = document.getElementById("login-btn")
 
         function toLogin(){
             location.href='/login'
         };
-
-        if ('<%= session.username %>'){
-            accountBtn.hidden = false;
-            loginBtn.hidden = true;
+        
+        function toLogout() {
+            location.href = '/logout'
         };
 
-        function toAccount(){
-            window.location.href = '/profile/<%= userid %>'
+        const profileNav = document.getElementById('profile-nav');
+        profileNav.hidden = true;
+        
+        if ('<%= userid %>') {
+            logoutBtn.hidden = false;
+            loginBtn.hidden = true;
+
+            profileNav.hidden = false;
         };
 
         const search = document.getElementById("search")

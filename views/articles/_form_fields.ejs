@@ -5,7 +5,7 @@
     <label for="category" id="cat-label" style="font-size: 20px;">Choose Category</label><br>
     <select id="category">
         <% categories.forEach(cate=>{ %>
-        <option value="<%= article.category %>">
+        <option value="<%= cate.name %>">
             <%= cate.name %>
         </option>
         <% }) %>
@@ -25,5 +25,5 @@
     <textarea required name="markdown" id="markdown" class="form-textarea well-font"><%= article.markdown %></textarea>
 </div>
 
-<button type="submit" id="save-btn">Save</button>
+<button type="submit" id="save-btn" onclick="whenSubmit()">Save</button>
 <a href="/" id="back-btn">Cancel</a>

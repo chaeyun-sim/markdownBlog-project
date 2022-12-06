@@ -15,7 +15,7 @@
     <%- include("_navbar") %>
 
     <div class="container" style="margin-bottom: 0px;">
-        <span><%= article.group %> </span>
+        <a href="/category/<%= cate.id %>" id="cate-name"><span><%= cate.name %></span></a>
         <h1 style="font-size: 240%; margin-bottom: 10px;"><%= article.title %></h1>
         <div style="float: right; margin-top: 29px;">
             <div>
@@ -48,19 +48,19 @@
                 <div id='card-body' id="post">
                     <div>
                         <div class="btn-div">
-                            <a href="/articles/<%= article.slug%>/<%= comment._id %>" class="btn" id='commentEdit'
-                                class="edit">E</a>
-                            <a href="/articles/<%= article.slug%>/del/<%= comment._id %>" class="btn"
-                                id="commentDelete">D</a>
-                        </div>
-                        <h4 style="font-size: 22px; margin-left: 20px;">RE: <%= comment.parentTitle %></h4>
-                        <div style=" margin-top: 10px; margin-bottom: 19px; margin-left: 20px;">
-                            <%= comment.post %>
+                            <% if (comment.writer == session.username) {%>
+                                <a href="/articles/<%= article.slug%>/<%= comment._id %>" class="btn" id='commentEdit'
+                                    class="edit">E</a>
+                                <a href="/articles/<%= article.slug%>/del/<%= comment._id %>" class="btn"
+                                    id="commentDelete">D</a>
+                            <% } %>
                         </div>
                         <div class="date-text" style="margin-left: 20px;">
                             <%= comment.createdAt.toLocaleDateString('ko-KR', { timeZone: 'UTC'}) %> by
-                            <strong><%= comment.writer %></strong>
-
+                            <span style="color: rgb(71, 71, 71)"><%= comment.writer %></span>
+                        </div>
+                        <div style=" margin-top: 10px; margin-bottom: 19px; margin-left: 20px;">
+                            <%= comment.post %>
                         </div>
                     </div>
                 </div>
@@ -115,9 +115,9 @@
 
         // 로그인/로그아웃 버튼 체인지 부분
 
-        const accountBtn = document.getElementById("account-btn")
+        const logoutBtn = document.getElementById("logout-btn");
         const loginBtn = document.getElementById("login-btn")
-        accountBtn.hidden = true;
+        logoutBtn.hidden = true;
 
         const editBtn = document.getElementById('editBtn')
         const delBtn = document.getElementById('delBtn')
@@ -128,16 +128,29 @@
             location.href = '/login'
         };
 
-        if ('<%= session %>') {
-            accountBtn.hidden = false;
-            loginBtn.hidden = true;
-            editBtn.hidden = false;
-            delBtn.hidden = false;
+        function toLogout() {
+            location.href = '/logout'
         };
 
-        function toAccount() {
-            window.location.href = '/profile/<%= userid %>'
+        const profileNav = document.getElementById('profile-nav');
+        profileNav.hidden = true;
+        
+        if ('<%= session.username %>') {
+            logoutBtn.hidden = false;
+            loginBtn.hidden = true;
+
+            profileNav.hidden = false;
         };
+
+        if ('<%= session.username %>' == 'admin'){
+            editBtn.hidden = false;
+            delBtn.hidden = false;
+        }
+
+        if ('<%= session.username %>' == '<%= article.writer %>') {
+            editBtn.hidden = false;
+            delBtn.hidden = false;
+        }
 
         // 검색 버튼 눌렀을 시 이동 경로 설정
 

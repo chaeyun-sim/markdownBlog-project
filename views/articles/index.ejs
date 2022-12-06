@@ -26,13 +26,12 @@
 
         <div style="text-align: center; margin-top: 30px;">
             <div>
-                <a href="/" class="margin-r no-text-decoration" style="color:darkslategray">All</a>
+                <a href="/" class="margin-r no-text-decoration category-color category">All</a>
 
-                <% categories.forEach(category => { %>
-                <a href="#" class="margin-r no-text-decoration" style="color:darkslategray"><%= category.name %></a>
+                <% categories.forEach(cate => { %>
+                <span class="category-color" style="margin-right: 20px;">•</span>
+                <a href="/category/<%= cate.id %>" id="cate" class="no-text-decoration category category-color" style="margin-right: 15px; cursor: pointer"><%= cate.name %></a>
                 <% }) %>
-
-                <a href="/article/add/categories">+</a>
             </div>
         </div>
 
@@ -40,8 +39,7 @@
             <% articles.forEach(article => { %>
             <div id="container">
                 <div id="card-body" class="">
-
-                    <a href="articles/<%= article.slug %>" class="no-text-decoration" id="article-title">
+                    <a href="/articles/<%= article.slug %>" class="no-text-decoration" id="article-title">
                         <h3 style="margin-left: 15px; font-size: 21px;"><%= article.title %></h3>
                     </a>
                     <div id="desc">
@@ -61,7 +59,9 @@
             <% }) %>
         </div>
     </div>
+
     <%- include("_copyright") %>
+
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script>
         const search = document.getElementById("search")
@@ -73,26 +73,21 @@
         };
 
         const newArticle = document.getElementById('newArticle');
-        if (!'<%= session.username %>') {
-            newArticle.hidden = true;
-        } else {
+        if ('<%= session.username %>' == 'admin') {
             newArticle.hidden = false;
+        } else {
+            newArticle.hidden = true;
         }
 
-        function whenNewArticle() {
-            if (!'<%= session.username %>') {
-                alert("Login before you write.");
-                location.href = '/';
-            } else {
-                location.href = 'articles/new'
-            }
-        };
+        function whenNewArticle(){
+            location.href='/articles/new'
+        }
 
-        const accountBtn = document.getElementById("account-btn");
+        const logoutBtn = document.getElementById("logout-btn");
         const loginBtn = document.getElementById("login-btn")
         const editBtn = document.getElementById("editBtn");
         const delBtn = document.getElementById("delBtn");
-        accountBtn.hidden = true;
+        logoutBtn.hidden = true;
         // editBtn.hidden = true;
         // delBtn.hidden = true;
 
@@ -100,17 +95,19 @@
             location.href = '/login'
         };
 
-        if ('<%= session.username %>') {
-            accountBtn.hidden = false;
-            loginBtn.hidden = true;
-
-            editBtn.hidden = false;
-            delBtn.hidden = false;
+        function toLogout() {
+            location.href = '/logout'
         };
 
-        function toAccount() {
-            window.location.href = '/profile/<%= userid %>'
-        }
+        const profileNav = document.getElementById('profile-nav');
+        profileNav.hidden = true;
+
+        if ('<%= userid %>') {
+            logoutBtn.hidden = false;
+            loginBtn.hidden = true;
+
+            profileNav.hidden = false;
+        };
 
         function myFunction() {
             document.getElementById("myDropdown").classList.toggle("show");

@@ -2,12 +2,16 @@
     float:right; border-radius: 50px; border: none; cursor: pointer; height: 35px; width:80px; background-color: lightseagreen; color: white; margin-top: 19px; margin-right: 10px; font-size: 16px;
 }
 
-#account-btn {
+#logout-btn {
     float:right; border-radius: 50px; border: none; cursor: pointer; height: 35px; width:80px; background-color: lightcoral; color: white; margin-top: 17px; margin-right: 10px; font-size: 16px;
 }
 
+#logout-btn:hover {
+    background-color: rgb(230, 80, 25)
+}
+
 .nav-style {
-    float:left; margin-right: 37px; margin-top: 25px
+    float:left; margin-right: 35px; margin-top: 27px
 }
 
 .nav-text {
@@ -21,6 +25,7 @@
 .dropbtn {
     color: #4f4e4e;
     padding: 8px;
+    margin-right: 10px;
     font-size: 16px;
     border: none;
     cursor: pointer;
@@ -37,7 +42,7 @@
 }
   
 .dropdown-content {
-    left: -1000%;
+    left: -770%;
     display: none;
     position: absolute;
     min-width: 350px;
@@ -73,9 +78,15 @@
 }
 
 #searchIcon {
-    width: 10px;
-    height: 10px;
+    background-color: transparent;
+    font-size: 16px;
+    border: none;
     padding: 10px;
+    cursor: pointer;
+}
+
+#searchIcon:hover {
+    transform: scale(1.5);
 }
 
 #thisbtn {

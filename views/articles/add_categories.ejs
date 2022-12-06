@@ -17,11 +17,11 @@
 
         <form action="/article/add/categories" method="POST">
             <div style="margin-top: 30px">
-                <label for="title" style="font-size: 20px;">Title</label><br>
-                <input required value="<%= category.name %>" type="text" name="title" id="title" class="form-shape well-font">
+                <label for="title" style="font-size: 20px;">Category Name</label><br>
+                <input required value="<%= category.name %>" type="text" name="name" id="name" class="form-shape well-font">
             </div>
             <div style="margin-top: 30px;">
-                <label for="description" style="font-size: 20px;">Description</label><br>
+                <label for="description" style="font-size: 20px;">Category Description</label><br>
                 <textarea name="description" id="description" class="form-textarea well-font"><%= category.description %></textarea>
             </div>
             <button type="submit" id="save-btn">Save</button>
@@ -32,8 +32,8 @@
     <%- include("_copyright") %>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script>
-        const accountBtn = document.getElementById("account-btn");
-        accountBtn.hidden = true;
+        const logoutBtn = document.getElementById("logout-btn");
+        logoutBtn.hidden = true;
 
         const loginBtn = document.getElementById("login-btn")
 
@@ -41,13 +41,18 @@
             location.href='/login'
         };
 
-        if ('<%= session.username %>'){
-            accountBtn.hidden = false;
+        const profileNav = document.getElementById('profile-nav');
+        profileNav.hidden = true;
+        
+        if ('<%= session.username %>') {
+            logoutBtn.hidden = false;
             loginBtn.hidden = true;
+
+            profileNav.hidden = false;
         };
 
-        function toAccount(){
-            window.location.href = '/profile/<%= userid %>'
+        function toLogout() {
+            location.href = '/logout'
         };
 
         const search = document.getElementById("search")

@@ -39,11 +39,15 @@ app.use(session({
 
 app.get('/', async (req, res) => {
     // const articles = await Article.find().sort({ createdAt: 'desc' });
-    const articles = await Article.find({ isDeleted : false }).sort({ createdAt: 'desc' });
+    let articles = '';
+    const categories = req.query.value;
+    console.log(categories)
+    articles = await Article.find({ isDeleted : false }).sort({ createdAt: 'desc' });
     const category = await Categories.find();
     const user = await User.findOne({ username: req.session.username });
     let session = '';
     let userId = '';
+    
     if(user) {
         session = req.session;
         userId = user._id.toString();

@@ -9,13 +9,12 @@ const randomid = require('randomid');
 const session = require('express-session');
 const jsdom = require('jsdom');
 const comment = require('./../models/comment');
+const category = require('./../models/category');
 
 // 새 아티클 저장 페이지
 router.get('/new', async (req, res) => {
     const user = await User.findOne({ username: req.session.username });
     const category = await Categories.find();
-    console.log(category)
-    console.log(user)
     let sessions = '';
     let userId = '';
     if(user) {
@@ -29,13 +28,14 @@ router.get('/new', async (req, res) => {
 router.get('/edit/:id', async (req, res) => {
     const article = await Article.findById(req.params.id);
     const user = await User.findOne({ username: req.session.username });
+    const category = await Categories.find();
     let session = '';
     let userId = '';
     if(user) {
         session = req.session;
         userId = user._id.toString();
     };
-    res.render('articles/edit', { article: article, session: session, userid : userId })
+    res.render('articles/edit', { article: article, session: session, userid : userId, categories : category })
 });
 
 // 새 아티클 추가
@@ -60,7 +60,8 @@ router.delete('/:id', async (req, res) => {
         comments.forEach(comment => {
             comment.isDeleted = true;
             comment.save();
-            console.log("deleted!");
+            console
+            .log("deleted!");
         });
         res.status(301).redirect('/');
     } catch (err){
@@ -72,11 +73,13 @@ router.delete('/:id', async (req, res) => {
 router.get('/:slug', async (req, res) => {
     const article = await Article.findOne({ slug: req.params.slug });
     const comments = await Comments.find({ parentTitle: article.title, isDeleted : false }).sort({ createdAt: 'asc' }); 
+    const category = await Categories.find()
     const user = await User.findOne({ username: req.session.username });
     let previous = await Article.findOne({ indexNum: article.indexNum - 1 });
     let next = await Article.findOne({ indexNum: article.indexNum + 1})
     let session = '';
     let userId = '';
+    let cate = '';
     if(!previous) {
         previous = '';
     }
@@ -87,8 +90,14 @@ router.get('/:slug', async (req, res) => {
         session = req.session;
         userId = user._id.toString();
     }
+    for (let i = 0; i < category.length; i++){
+        if (category[i].name == article.category) {
+            cate = category[i];
+            console.log(cate)
+        }
+    }
     if (article == null) res.redirect('/');
-    res.render('articles/show', { article: article, comments: comments, length: Object.keys(comments).length, user : req.session.username, comment: new Comments(), session: session, userid : userId, previous: previous, next: next });
+    res.render('articles/show', { article: article, comments: comments, length: Object.keys(comments).length, user : req.session.username, comment: new Comments(), session: session, userid : userId, previous: previous, next: next, cate:cate });
 });
 
 // 댓글 추가
@@ -172,7 +181,6 @@ function saveArticleAndRedirect(path) {
         article.description = req.body.description;
         article.markdown = req.body.markdown;
         article.writer = req.session.username;
-        article.category = req.body.category;
         article.isDeleted = false;
         article.isUpdated = false;
         article.indexNum = totalAricles + 1;
