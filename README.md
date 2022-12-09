@@ -4,7 +4,7 @@ starting from October 23, 2022
 <br/><br/>
 
 
-## -------- Additional Features -------- 
+### -------- Additional Features -------- 
 
 ## Week 1
 11/04 - Updated comment part (Read)<br/>
